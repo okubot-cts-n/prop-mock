@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTS モック一覧</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Hiragino Sans', 'Yu Gothic UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            color: #2c3e50;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+        }
+        
+        .mock-list {
+            margin: 30px 0;
+        }
+        
+        .mock-item {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .mock-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .mock-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .mock-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .mock-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🎯 CTS モック一覧</div>
+            <div class="subtitle">開発中のプロトタイプとモックアップ</div>
+        </div>
+        
+        <div class="mock-list">
+            <div class="mock-item" onclick="window.open('./english_learning_navigation.html', '_blank')">
+                <div class="mock-title">英語学習ナビゲーション</div>
+                <div class="mock-description">
+                    3つの質問で最適な英語学習サービスを診断・提案するインタラクティブなナビゲーションシステム。
+                    ユーザーの英語レベルと学習課題に基づいて、パーソナライズされた学習プランを提供します。
+                </div>
+                <div class="mock-tags">
+                    <span class="tag">診断システム</span>
+                    <span class="tag">英語学習</span>
+                    <span class="tag">パーソナライゼーション</span>
+                    <span class="tag">インタラクティブ</span>
+                </div>
+            </div>
+            
+            <!-- 今後追加されるモックのテンプレート -->
+            <!--
+            <div class="mock-item" onclick="window.open('./future_mock.html', '_blank')">
+                <div class="mock-title">将来のモックタイトル</div>
+                <div class="mock-description">
+                    モックの説明文をここに記載します。
+                </div>
+                <div class="mock-tags">
+                    <span class="tag">タグ1</span>
+                    <span class="tag">タグ2</span>
+                </div>
+            </div>
+            -->
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 CTS. All rights reserved.</p>
+            <p>このページは開発中のプロトタイプです。</p>
+        </div>
+    </div>
+</body>
+</html> 
