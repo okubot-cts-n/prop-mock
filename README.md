@@ -27,6 +27,52 @@ GitHub Pagesで公開されているため、以下のURLでアクセスでき�
 - **デザイン**: レスポンシブデザイン対応
 - **ブラウザ対応**: モダンブラウザ（Chrome, Firefox, Safari, Edge）
 
+## 🔗 iframe での使用について
+
+### ⚠️ GitHub Pages の制限
+GitHub Pagesはセキュリティヘッダー（X-Frame-Options: DENY）により、iframeでの表示が制限される可能性があります。
+
+### ✅ 推奨解決策
+
+#### 1. Netlify でのホスト（推奨）
+```bash
+# 1. GitHubリポジトリをNetlifyに接続
+# 2. netlify.tomlファイルでヘッダー設定
+# 3. 自動的にiframe表示が可能になる
+```
+
+#### 2. iframe 埋め込みコード例
+```html
+<iframe 
+    src="https://your-netlify-url.netlify.app/english_learning_navigation.html"
+    title="英語学習ナビゲーション"
+    width="100%"
+    height="800px"
+    allowfullscreen>
+    お使いのブラウザはiframeをサポートしていません。
+</iframe>
+```
+
+#### 3. レスポンシブ対応CSS
+```css
+.iframe-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    overflow: hidden;
+}
+
+.iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+```
+
 ## 📝 開発メモ
 
 - このリポジトリは単発案件のモックをGitHub Pagesで見れるように作成されています
