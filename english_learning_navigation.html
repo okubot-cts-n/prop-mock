@@ -439,6 +439,165 @@
             color: white;
             border-color: #667eea;
         }
+        
+        /* TOEIC選択ボタン */
+        .toeic-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .toeic-btn {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .toeic-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .toeic-btn.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        
+        .toeic-score {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .toeic-level {
+            font-size: 14px;
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+        
+        .toeic-description {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        /* モーダルスタイル */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+        
+        .modal-close:hover {
+            color: #333;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .modal-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .modal-examples {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .modal-examples h4 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        
+        .modal-examples ul {
+            margin-left: 20px;
+        }
+        
+        .modal-examples li {
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        /* 課題詳細ボタン */
+        .difficulty-btn {
+            position: relative;
+        }
+        
+        .difficulty-btn::after {
+            content: "ℹ️";
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        .difficulty-btn:hover::after {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -469,7 +628,54 @@
             <div class="header">
                 <div class="logo">レベル診断</div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 33%"></div>
+                    <div class="progress-fill" style="width: 25%"></div>
+                </div>
+            </div>
+            
+            <div class="diagnosis-section">
+                <div class="question">まず、あなたの現在のTOEICレベルを教えてください</div>
+                
+                <div class="toeic-options">
+                    <div class="toeic-btn" onclick="selectTOEIC(this, 'beginner')">
+                        <div class="toeic-score">300-500点</div>
+                        <div class="toeic-level">基礎レベル</div>
+                        <div class="toeic-description">基本的な文法や語彙を学習中</div>
+                    </div>
+                    <div class="toeic-btn" onclick="selectTOEIC(this, 'intermediate')">
+                        <div class="toeic-score">500-700点</div>
+                        <div class="toeic-level">中級レベル</div>
+                        <div class="toeic-description">日常的な英語は理解できる</div>
+                    </div>
+                    <div class="toeic-btn" onclick="selectTOEIC(this, 'advanced')">
+                        <div class="toeic-score">700-850点</div>
+                        <div class="toeic-level">上級レベル</div>
+                        <div class="toeic-description">ビジネス英語も理解できる</div>
+                    </div>
+                    <div class="toeic-btn" onclick="selectTOEIC(this, 'expert')">
+                        <div class="toeic-score">850点以上</div>
+                        <div class="toeic-level">エキスパート</div>
+                        <div class="toeic-description">ネイティブレベルに近い</div>
+                    </div>
+                    <div class="toeic-btn" onclick="selectTOEIC(this, 'unknown')">
+                        <div class="toeic-score">未受験</div>
+                        <div class="toeic-level">レベル不明</div>
+                        <div class="toeic-description">TOEICを受けたことがない</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn btn-back" onclick="prevScreen('start-screen')">戻る</button>
+                <button class="btn btn-primary" id="toeic-next-btn" onclick="nextScreen('skills-diagnosis')" disabled>次へ</button>
+            </div>
+        </div>
+        
+        <!-- 画面2.5: スキル診断画面 -->
+        <div class="screen" id="skills-diagnosis">
+            <div class="header">
+                <div class="logo">スキル診断</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 50%"></div>
                 </div>
             </div>
             
@@ -481,13 +687,13 @@
                         <span class="skill-icon">🎧</span> 音声
                     </div>
                     <div class="difficulty-options">
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'basic')">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'basic')" oncontextmenu="showChallengeModal('sound', 'basic'); return false;" title="右クリックで詳細表示">
                             基本的なルールが<br>わからない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'intermediate')">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'intermediate')" oncontextmenu="showChallengeModal('sound', 'intermediate'); return false;" title="右クリックで詳細表示">
                             音が聞き分けられない<br>音が回らない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'advanced')">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'advanced')" oncontextmenu="showChallengeModal('sound', 'advanced'); return false;" title="右クリックで詳細表示">
                             スピードについていけない<br>長くなると保持できない
                         </div>
                     </div>
@@ -496,13 +702,13 @@
                         <span class="skill-icon">📝</span> 文章
                     </div>
                     <div class="difficulty-options">
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'basic')">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'basic')" oncontextmenu="showChallengeModal('text', 'basic'); return false;" title="右クリックで詳細表示">
                             基本的な文のルール<br>（文法）がわからない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'intermediate')">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'intermediate')" oncontextmenu="showChallengeModal('text', 'intermediate'); return false;" title="右クリックで詳細表示">
                             文章で理解できない<br>文を組み立てられない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'advanced')">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'advanced')" oncontextmenu="showChallengeModal('text', 'advanced'); return false;" title="右クリックで詳細表示">
                             情報量が多くなると<br>理解できない/話せない
                         </div>
                     </div>
@@ -511,13 +717,13 @@
                         <span class="skill-icon">📖</span> 語彙
                     </div>
                     <div class="difficulty-options">
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'basic')">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'basic')" oncontextmenu="showChallengeModal('vocabulary', 'basic'); return false;" title="右クリックで詳細表示">
                             基本的な単語が<br>わからない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'intermediate')">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'intermediate')" oncontextmenu="showChallengeModal('vocabulary', 'intermediate'); return false;" title="右クリックで詳細表示">
                             とっさに簡単な<br>単語が出てこない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'advanced')">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'advanced')" oncontextmenu="showChallengeModal('vocabulary', 'advanced'); return false;" title="右クリックで詳細表示">
                             文脈に応じた表現の<br>使い分けができない
                         </div>
                     </div>
@@ -525,8 +731,8 @@
             </div>
             
             <div class="btn-container">
-                <button class="btn btn-back" onclick="prevScreen('start-screen')">戻る</button>
-                <button class="btn btn-primary" id="next-btn" onclick="nextScreen('level-result')" disabled>次へ</button>
+                <button class="btn btn-back" onclick="prevScreen('diagnosis-screen')">戻る</button>
+                <button class="btn btn-primary" id="skills-next-btn" onclick="nextScreen('level-result')" disabled>次へ</button>
             </div>
         </div>
         
@@ -623,16 +829,439 @@
         </div>
     </div>
     
+    <!-- 課題詳細モーダル -->
+    <div class="modal" id="challenge-modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeChallengeModal()">&times;</span>
+            <div class="modal-title" id="modal-title">課題詳細</div>
+            <div class="modal-description" id="modal-description">
+                <!-- 課題の詳細説明がここに表示されます -->
+            </div>
+            <div class="modal-examples" id="modal-examples">
+                <!-- 具体例がここに表示されます -->
+            </div>
+        </div>
+    </div>
+    
     <script>
         // ユーザーの選択を保存
         let userSelections = {
+            toeic: null,
             sound: null,
             text: null,
             vocabulary: null
         };
         
+        // TOEIC選択機能
+        function selectTOEIC(element, level) {
+            // 既に選択されている場合は選択を解除
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+                userSelections.toeic = null;
+            } else {
+                // 他のボタンの選択を解除
+                const siblings = element.parentElement.children;
+                for (let sibling of siblings) {
+                    sibling.classList.remove('selected');
+                }
+                
+                // 新しい選択を追加
+                element.classList.add('selected');
+                userSelections.toeic = level;
+            }
+            
+            // 次へボタンの有効/無効を更新
+            updateTOEICNextButton();
+        }
+        
+        function updateTOEICNextButton() {
+            const nextBtn = document.getElementById('toeic-next-btn');
+            
+            if (userSelections.toeic) {
+                nextBtn.disabled = false;
+                nextBtn.style.opacity = '1';
+                nextBtn.style.cursor = 'pointer';
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.style.opacity = '0.5';
+                nextBtn.style.cursor = 'not-allowed';
+            }
+        }
+        
+        // 課題詳細データ
+        const challengeDetails = {
+            sound: {
+                basic: {
+                    title: "音声 - 基本的なルールがわからない",
+                    description: "英語の音のルール（発音記号、音の変化、リズムなど）の基礎知識が不足している状態です。",
+                    examples: [
+                        "発音記号が読めない",
+                        "子音と母音の区別ができない",
+                        "単語のアクセントがわからない",
+                        "リエゾン（音の連結）が理解できない",
+                        "強勢とリズムがつかめない"
+                    ]
+                },
+                intermediate: {
+                    title: "音声 - 音が聞き分けられない・音が回らない",
+                    description: "基本的な音のルールは理解しているが、実際の聞き取りや発話で困難を感じている状態です。",
+                    examples: [
+                        "LとRの区別ができない",
+                        "THの音が出せない",
+                        "早口になると聞き取れない",
+                        "自分で発音しようとすると舌が回らない",
+                        "ネイティブの発音と自分の発音が違う"
+                    ]
+                },
+                advanced: {
+                    title: "音声 - スピードについていけない・長くなると保持できない",
+                    description: "個々の音は理解できるが、自然なスピードや長い文章になると処理が追いつかない状態です。",
+                    examples: [
+                        "映画やドラマの英語が早すぎて聞き取れない",
+                        "長い文章の途中で内容を忘れてしまう",
+                        "会議やプレゼンテーションについていけない",
+                        "電話での会話が困難",
+                        "複数人の会話に入れない"
+                    ]
+                }
+            },
+            text: {
+                basic: {
+                    title: "文章 - 基本的な文のルール（文法）がわからない",
+                    description: "英語の基本的な文法構造や語順ルールが理解できていない状態です。",
+                    examples: [
+                        "主語・動詞・目的語の順番がわからない",
+                        "時制（現在・過去・未来）が使い分けられない",
+                        "疑問文・否定文の作り方がわからない",
+                        "前置詞の使い方がわからない",
+                        "単数・複数の概念が曖昧"
+                    ]
+                },
+                intermediate: {
+                    title: "文章 - 文章で理解できない・文を組み立てられない",
+                    description: "基本文法は理解しているが、実際の文章理解や作文で困難を感じている状態です。",
+                    examples: [
+                        "長い文章の構造が把握できない",
+                        "関係代名詞の文が理解できない",
+                        "自分の言いたいことを英語で表現できない",
+                        "文章を読むのに時間がかかりすぎる",
+                        "複雑な文法構造が使えない"
+                    ]
+                },
+                advanced: {
+                    title: "文章 - 情報量が多くなると理解できない・話せない",
+                    description: "基本的な文章は理解できるが、複雑で情報量の多い内容になると処理が困難な状態です。",
+                    examples: [
+                        "論文や専門文書が読めない",
+                        "ビジネス文書の作成ができない",
+                        "プレゼンテーションで論理的に話せない",
+                        "ディスカッションで意見を整理して伝えられない",
+                        "ニュアンスや含意が理解できない"
+                    ]
+                }
+            },
+            vocabulary: {
+                basic: {
+                    title: "語彙 - 基本的な単語がわからない",
+                    description: "日常生活や基本的なコミュニケーションに必要な語彙が不足している状態です。",
+                    examples: [
+                        "中学レベルの基本単語がわからない",
+                        "数字や曜日、月が英語で言えない",
+                        "家族や職業の単語がわからない",
+                        "基本的な動詞（eat, drink, go等）が使えない",
+                        "色や形の単語がわからない"
+                    ]
+                },
+                intermediate: {
+                    title: "語彙 - とっさに簡単な単語が出てこない",
+                    description: "語彙は知っているが、会話や作文で適切な単語を瞬時に思い出せない状態です。",
+                    examples: [
+                        "知っている単語なのに会話で出てこない",
+                        "日本語では簡単に言えることが英語で表現できない",
+                        "単語を思い出すのに時間がかかる",
+                        "同じ単語ばかり使ってしまう",
+                        "類義語の使い分けができない"
+                    ]
+                },
+                advanced: {
+                    title: "語彙 - 文脈に応じた表現の使い分けができない",
+                    description: "豊富な語彙は持っているが、場面や文脈に応じた適切な表現選択ができない状態です。",
+                    examples: [
+                        "フォーマル・カジュアルの使い分けができない",
+                        "ビジネス場面での適切な表現がわからない",
+                        "文化的なニュアンスが理解できない",
+                        "専門用語と一般用語の使い分けができない",
+                        "相手に応じた敬語レベルの調整ができない"
+                    ]
+                }
+            }
+        };
+        
+        // モーダル表示機能
+        function showChallengeModal(skill, level) {
+            const modal = document.getElementById('challenge-modal');
+            const title = document.getElementById('modal-title');
+            const description = document.getElementById('modal-description');
+            const examples = document.getElementById('modal-examples');
+            
+            const data = challengeDetails[skill][level];
+            
+            title.textContent = data.title;
+            description.textContent = data.description;
+            
+            examples.innerHTML = `
+                <h4>具体例：</h4>
+                <ul>
+                    ${data.examples.map(example => `<li>${example}</li>`).join('')}
+                </ul>
+            `;
+            
+            modal.classList.add('active');
+        }
+        
+        function closeChallengeModal() {
+            const modal = document.getElementById('challenge-modal');
+            modal.classList.remove('active');
+        }
+        
+        // モーダル外クリックで閉じる
+        window.onclick = function(event) {
+            const modal = document.getElementById('challenge-modal');
+            if (event.target === modal) {
+                closeChallengeModal();
+            }
+        }
+        
         // サービスデータ（画像を参考に拡充）
         const services = {
+            // 自主トレーニング系
+            selfTraining: {
+                audioTraining: [
+                    {
+                        name: "SHADOTEN",
+                        description: "シャドーイングに特化した学習アプリ",
+                        features: ["シャドーイング", "発音", "音声"],
+                        recommended: true,
+                        price: "月額980円",
+                        logo: "🎧",
+                        category: "音読トレーニング系",
+                        approach: "自主トレーニング",
+                        details: {
+                            "学習内容": ["シャドーイング練習", "発音矯正", "音声認識", "リズム練習"],
+                            "特徴": ["シャドーイング特化", "音声認識機能", "レベル別教材", "進捗管理"]
+                        },
+                        url: "https://shadoten.com/"
+                    },
+                    {
+                        name: "Shadowing Buddy",
+                        description: "シャドーイング練習のパートナー",
+                        features: ["シャドーイング", "発音", "練習"],
+                        recommended: false,
+                        price: "月額1,480円",
+                        logo: "🎤",
+                        category: "音読トレーニング系",
+                        approach: "自主トレーニング",
+                        details: {
+                            "学習内容": ["シャドーイング練習", "発音矯正", "音声録音", "フィードバック"],
+                            "特徴": ["専用シャドーイング機能", "音声録音・再生", "発音評価", "練習記録"]
+                        },
+                        url: "https://shadowing-buddy.com/"
+                    },
+                    {
+                        name: "GOSAPO 音読トレーニング",
+                        description: "音読に特化したトレーニング",
+                        features: ["音読", "発音", "トレーニング"],
+                        recommended: false,
+                        price: "月額3,980円",
+                        logo: "📖",
+                        category: "音読トレーニング系",
+                        approach: "自主トレーニング",
+                        details: {
+                            "学習内容": ["音読トレーニング", "発音矯正", "リズム練習", "音声録音"],
+                            "特徴": ["音読特化", "科学的なアプローチ", "個人指導", "成果保証"]
+                        },
+                        url: "https://gosapo.jp/"
+                    }
+                ],
+                writingTraining: [
+                    {
+                        name: "SUPIFUL",
+                        description: "スピーキングに特化した学習",
+                        features: ["スピーキング", "英作文", "練習"],
+                        recommended: true,
+                        price: "月額2,980円",
+                        logo: "🗣️",
+                        category: "英作文系",
+                        approach: "自主トレーニング",
+                        details: {
+                            "学習内容": ["スピーキング練習", "英作文", "発音練習", "会話練習"],
+                            "特徴": ["スピーキング特化", "実践的な練習", "音声認識", "フィードバック"]
+                        },
+                        url: "https://supiful.com/"
+                    },
+                    {
+                        name: "TOEIC S&W対策アプリ",
+                        description: "TOEIC Speaking & Writing 対策",
+                        features: ["TOEIC", "スピーキング", "ライティング"],
+                        recommended: false,
+                        price: "月額2,480円",
+                        logo: "📝",
+                        category: "英作文系",
+                        approach: "自主トレーニング",
+                        details: {
+                            "学習内容": ["TOEIC S&W対策", "スピーキング練習", "ライティング練習", "模擬試験"],
+                            "特徴": ["TOEIC特化", "本番形式の練習", "スコア予測", "弱点分析"]
+                        },
+                        url: "https://toeic-sw.com/"
+                    },
+                    {
+                        name: "VERSANT対策アプリ",
+                        description: "VERSANT Speaking Test 対策",
+                        features: ["VERSANT", "スピーキング", "発話流暢性"],
+                        recommended: false,
+                        price: "月額1,980円",
+                        logo: "🎯",
+                        category: "英作文系",
+                        approach: "自主トレーニング",
+                        details: {
+                            "学習内容": ["VERSANT対策", "発話流暢性", "語彙力強化", "文構造練習"],
+                            "特徴": ["VERSANT特化", "AI評価", "即座のフィードバック", "弱点分析"]
+                        },
+                        url: "https://versant-prep.com/"
+                    }
+                ],
+                aiTools: [
+                    {
+                        name: "Speak",
+                        description: "スピーキング特化の学習アプリ",
+                        features: ["スピーキング", "AI", "練習"],
+                        recommended: true,
+                        price: "月額1,980円",
+                        logo: "🤖",
+                        category: "AIツール",
+                        approach: "自主トレーニング",
+                        details: {
+                            "学習内容": ["スピーキング練習", "AIとの会話", "発音練習", "語彙学習"],
+                            "特徴": ["AIとの会話練習", "音声認識", "発音評価", "レベル別教材"]
+                        },
+                        url: "https://speak.com/"
+                    },
+                    {
+                        name: "AI英会話 スピークバディ",
+                        description: "AIを使った基礎英会話練習",
+                        features: ["AI", "基礎", "24時間対応"],
+                        recommended: false,
+                        price: "月額3,980円",
+                        logo: "🤖",
+                        category: "AIツール",
+                        approach: "自主トレーニング",
+                        details: {
+                            "学習内容": ["AIとの英会話練習", "基礎文法学習", "発音練習", "語彙強化"],
+                            "特徴": ["24時間いつでも練習可能", "AIによる発音評価", "レベル別カリキュラム", "進捗管理機能"]
+                        },
+                        url: "https://speak-buddy.com/"
+                    },
+                    {
+                        name: "abceed",
+                        description: "TOEIC対策と基礎固めの両立が可能",
+                        features: ["TOEIC", "基礎対策", "アプリ学習"],
+                        recommended: false,
+                        price: "月額1,980円",
+                        logo: "📚",
+                        category: "AIツール",
+                        approach: "自主トレーニング",
+                        details: {
+                            "学習内容": ["TOEIC形式の問題演習", "基礎文法の復習", "語彙力強化", "リスニング練習"],
+                            "特徴": ["TOEICスコア予測機能", "弱点分析機能", "豊富な問題数", "音声付き解説"]
+                        },
+                        url: "https://abceed.com/"
+                    }
+                ],
+                eLearning: [
+                    {
+                        name: "パタプライングリッシュ",
+                        description: "パタプラ（パターンプラクティス）特化",
+                        features: ["文法", "パターン練習", "反復学習"],
+                        recommended: true,
+                        price: "月額2,480円",
+                        logo: "🔄",
+                        category: "eラーニング",
+                        approach: "自主トレーニング",
+                        details: {
+                            "学習内容": ["パターンプラクティス", "文法パターン習得", "反復練習", "自動化トレーニング"],
+                            "特徴": ["パターン特化", "科学的アプローチ", "段階的学習", "効果測定"]
+                        },
+                        url: "https://patapura.com/"
+                    }
+                ]
+            },
+            // NOVA代替
+            novaAlternative: {
+                callan: [
+                    {
+                        name: "NativeCamp.",
+                        description: "瞬間英作文に特化したレッスン",
+                        features: ["瞬間英作文", "英会話", "無制限"],
+                        recommended: true,
+                        price: "月額6,480円",
+                        logo: "🎯",
+                        category: "カランメソッド",
+                        approach: "NOVA代替",
+                        details: {
+                            "学習内容": ["瞬間英作文練習", "カランメソッド実践", "日常会話練習", "発音矯正"],
+                            "特徴": ["無制限レッスン", "予約不要で即座にレッスン", "多国籍講師", "アプリで簡単操作"]
+                        },
+                        url: "https://nativecamp.net/"
+                    },
+                    {
+                        name: "QQ English",
+                        description: "カランメソッド特化の英会話",
+                        features: ["カランメソッド", "英会話", "フィリピン"],
+                        recommended: false,
+                        price: "月額5,980円",
+                        logo: "💬",
+                        category: "カランメソッド",
+                        approach: "NOVA代替",
+                        details: {
+                            "学習内容": ["カランメソッド実践", "瞬間英作文", "日常会話", "文法練習"],
+                            "特徴": ["カランメソッド特化", "フィリピン講師", "24時間対応", "レベル別教材"]
+                        },
+                        url: "https://qqenglish.com/"
+                    }
+                ],
+                marketLeader: [
+                    {
+                        name: "Bizmates",
+                        description: "ビジネス英語に特化した上級者向けサービス",
+                        features: ["ビジネス英語", "上級者向け", "専門コース"],
+                        recommended: true,
+                        price: "月額15,000円〜",
+                        logo: "💼",
+                        category: "マーケットリーダー",
+                        approach: "NOVA代替",
+                        details: {
+                            "学習内容": ["ビジネス英語", "プレゼンテーション", "交渉英語", "専門分野英語"],
+                            "特徴": ["ビジネス特化", "実践的な内容", "専門講師", "企業研修対応"]
+                        },
+                        url: "https://www.bizmates.jp/"
+                    },
+                    {
+                        name: "DMMビジネスコース",
+                        description: "DMM英会話のビジネス特化コース",
+                        features: ["ビジネス英語", "DMM", "専門コース"],
+                        recommended: false,
+                        price: "月額8,980円〜",
+                        logo: "💼",
+                        category: "マーケットリーダー",
+                        approach: "NOVA代替",
+                        details: {
+                            "学習内容": ["ビジネス英会話", "プレゼンテーション", "会議英語", "メール作成"],
+                            "特徴": ["ビジネス特化", "豊富な教材", "多国籍講師", "24時間対応"]
+                        },
+                        url: "https://eikaiwa.dmm.com/business/"
+                    }
+                ]
+            },
             basic: [
                 {
                     name: "スタディサプリ ENGLISH",
@@ -763,7 +1392,8 @@
                     recommended: true,
                     price: "月額980円",
                     logo: "🎧",
-                    category: "音の対策",
+                    category: "音読トレーニング系",
+                    approach: "自主トレーニング",
                     details: {
                         "学習内容": [
                             "シャドーイング練習",
@@ -1284,7 +1914,7 @@
             }
             
             // 次へボタンの有効/無効を更新
-            updateNextButton();
+            updateSkillsNextButton();
         }
         
         function showSolution(type) {
@@ -1595,11 +2225,11 @@
             issuesList.innerHTML = issues.map(issue => `<li>${issue}</li>`).join('');
         }
         
-        function updateNextButton() {
-            const nextBtn = document.getElementById('next-btn');
-            const hasSelection = Object.values(userSelections).some(selection => selection !== null);
+        function updateSkillsNextButton() {
+            const nextBtn = document.getElementById('skills-next-btn');
+            const hasSkillSelection = userSelections.sound || userSelections.text || userSelections.vocabulary;
             
-            if (hasSelection) {
+            if (hasSkillSelection) {
                 nextBtn.disabled = false;
                 nextBtn.style.opacity = '1';
                 nextBtn.style.cursor = 'pointer';
