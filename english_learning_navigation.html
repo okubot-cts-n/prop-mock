@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>英語学習ナビゲーション</title>
+    <title>英語学習ナビゲーション v2.0</title>
     <style>
         * {
             margin: 0;
@@ -134,6 +134,78 @@
             transition: all 0.3s;
             text-align: center;
             font-size: 14px;
+            position: relative;
+        }
+        
+        /* 展開可能なカード */
+        .expandable-card {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .card-details {
+            display: none;
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 12px;
+            line-height: 1.5;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .expandable-card.expanded .card-details {
+            display: block;
+        }
+        
+        .expandable-card.expanded {
+            align-self: flex-start;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                padding-top: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 200px;
+                padding-top: 15px;
+            }
+        }
+        
+        /* 主な課題部分の文字色を改善 */
+        .card-details strong {
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+        
+        .card-details {
+            color: #ffffff !important;
+        }
+        
+        /* ヘルプアイコン */
+        .help-icon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            background: #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .help-icon:hover {
+            background: #667eea;
         }
         
         .difficulty-btn:hover {
@@ -145,10 +217,17 @@
             border-color: #667eea !important;
             background: #667eea !important;
             color: white !important;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
         
         .difficulty-btn.selected:hover {
             background: #5a6fd8 !important;
+            cursor: pointer;
+        }
+        
+        .difficulty-btn:not(.selected):hover {
+            cursor: pointer;
         }
         
         /* ステージ表示 */
@@ -254,7 +333,31 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
         
-
+        .service-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .service-logo {
+            font-size: 24px;
+        }
+        
+        .service-price {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: auto;
+        }
+        
+        .service-toeic-level {
+            color: #666;
+            font-size: 12px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #eee;
+        }
         
         .service-name {
             font-weight: bold;
@@ -480,272 +583,7 @@
             font-size: 12px;
             opacity: 0.7;
         }
-        
-        /* モーダルスタイル */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            animation: slideUp 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-            transition: color 0.3s;
-        }
-        
-        .modal-close:hover {
-            color: #333;
-        }
-        
-        .modal-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 15px;
-        }
-        
-        .modal-description {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        .modal-examples {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-        }
-        
-        .modal-examples h4 {
-            color: #495057;
-            margin-bottom: 10px;
-        }
-        
-        .modal-examples ul {
-            margin-left: 20px;
-        }
-        
-        .modal-examples li {
-            margin-bottom: 5px;
-            color: #666;
-        }
-        
-        /* ツールチップ */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .tooltip-content {
-            visibility: hidden;
-            opacity: 0;
-            position: absolute;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #2c3e50;
-            color: white;
-            text-align: left;
-            padding: 15px;
-            border-radius: 8px;
-            width: 300px;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: opacity 0.3s, visibility 0.3s;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        
-        .tooltip-content::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #2c3e50 transparent transparent transparent;
-        }
-        
-        .difficulty-btn:hover .tooltip-content {
-            visibility: visible;
-            opacity: 1;
-        }
-        
-        .tooltip-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #fff;
-            font-size: 16px;
-        }
-        
-        .tooltip-description {
-            margin-bottom: 12px;
-            color: #e8e8e8;
-        }
-        
-        .tooltip-examples {
-            font-size: 13px;
-            color: #d0d0d0;
-        }
-        
-        .tooltip-examples strong {
-            color: #fff;
-        }
-        
-        /* 主な課題部分の文字色を改善 */
-        .card-details strong {
-            color: #ffffff !important;
-            font-weight: 600;
-        }
-        
-        .card-details {
-            color: #ffffff !important;
-        }
-        
-        /* 展開可能なカード */
-        .expandable-card {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .expandable-card.expanded {
-            background: #f8f9ff;
-            border-color: #667eea;
-            padding: 20px;
-            align-self: flex-start;
-        }
-        
-        .card-details {
-            display: none;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-            font-size: 14px;
-            color: #666;
-            line-height: 1.5;
-        }
-        
-        .card-details.active {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                max-height: 0;
-                padding-top: 0;
-            }
-            to {
-                opacity: 1;
-                max-height: 200px;
-                padding-top: 15px;
-            }
-        }
-        
-        .help-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 24px;
-            height: 24px;
-            background: #667eea;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: bold;
-        }
-        
-        .help-icon:hover {
-            background: #5a6fd8;
-            transform: scale(1.1);
-        }
-        
-        .info-button {
-            background: none;
-            border: none;
-            color: #667eea;
-            font-size: 14px;
-            cursor: pointer;
-            text-decoration: underline;
-            margin-top: 5px;
-            padding: 0;
-        }
-        
-        .info-button:hover {
-            color: #5a6fd8;
-        }
-        
-        /* 課題詳細ボタン */
-        .difficulty-btn {
-            position: relative;
-        }
-        
-        .difficulty-btn::after {
-            content: "ℹ️";
-            position: absolute;
-            top: 5px;
-            right: 8px;
-            font-size: 12px;
-            opacity: 0.7;
-        }
-        
-        .difficulty-btn:hover::after {
-            opacity: 1;
-        }
-        
+
         /* 課題・対策・アプローチのグリッド */
         .challenge-solution-grid {
             display: grid;
@@ -918,42 +756,36 @@
                     </div>
                     <div class="difficulty-options">
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'sound', 'basic')" data-skill="sound" data-level="basic">
-
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
                             基本的なルールが<br>わからない
-
-
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 発音記号が読めない、子音・母音の区別がつかない、アクセントの位置がわからない
                                 <br><br>
                                 <strong>📝 対策アプローチ：</strong><br>
-                                基礎的な音韻学習、発音記号の習得、音素認識トレーニング
-                            </div>
+                                フォニックス学習、発音記号学習、音声認識練習
+                        </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'sound', 'intermediate')" data-skill="sound" data-level="intermediate">
-
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
                             音が聞き分けられない<br>音が回らない
-
-
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 L/Rの区別ができない、TH音が発音できない、単語レベルでの発音が不正確
                                 <br><br>
                                 <strong>📝 対策アプローチ：</strong><br>
-                                音素弁別訓練、シャドーイング、発音矯正練習
-                            </div>
+                                音声認識訓練、発音矯正、リスニング強化
+                        </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'sound', 'advanced')" data-skill="sound" data-level="advanced">
-
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
                             スピードについていけない<br>長くなると保持できない
-
-
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 ネイティブの会話についていけない、長い説明を覚えていられない、音声情報の処理が追いつかない
                                 <br><br>
                                 <strong>📝 対策アプローチ：</strong><br>
-                                高速リスニング練習、ワーキングメモリ強化、情報処理速度向上
+                                高速リスニング訓練、音声記憶トレーニング、実践的会話練習
                             </div>
                         </div>
                     </div>
@@ -963,36 +795,30 @@
                     </div>
                     <div class="difficulty-options">
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'text', 'basic')" data-skill="text" data-level="basic">
-
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
                             基本的な文のルール<br>（文法）がわからない
-
-
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 時制の概念がわからない、語順が理解できない、品詞の区別ができない
                                 <br><br>
                                 <strong>📝 対策アプローチ：</strong><br>
                                 基礎文法学習、パターン練習、構文理解トレーニング
-                            </div>
+                        </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'text', 'intermediate')" data-skill="text" data-level="intermediate">
-
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
                             文章で理解できない<br>文を組み立てられない
-
-
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 長い文が読めない、正しい文が作れない、文脈が理解できない
                                 <br><br>
                                 <strong>📝 対策アプローチ：</strong><br>
                                 読解練習、英作文訓練、文構造分析
-                            </div>
+                        </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'text', 'advanced')" data-skill="text" data-level="advanced">
-
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
                             情報量が多くなると<br>理解できない/話せない
-
-
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 長文読解が困難、複雑な議論ができない、情報整理ができない
@@ -1008,42 +834,36 @@
                     </div>
                     <div class="difficulty-options">
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'vocabulary', 'basic')" data-skill="vocabulary" data-level="basic">
-
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
                             基本的な単語が<br>わからない
-
-
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 高頻出単語がわからない、基本的な動詞・名詞が不明、単語の意味が曖昧
                                 <br><br>
                                 <strong>📝 対策アプローチ：</strong><br>
                                 基本語彙学習、頻出単語暗記、語彙定着練習
-                            </div>
+                        </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'vocabulary', 'intermediate')" data-skill="vocabulary" data-level="intermediate">
-
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
                             とっさに簡単な<br>単語が出てこない
-
-
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 会話で単語が出てこない、理解はできるが使えない、語彙の活用ができない
                                 <br><br>
                                 <strong>📝 対策アプローチ：</strong><br>
-                                語彙活用練習、瞬発力トレーニング、実践的語彙使用
-                            </div>
+                                語彙瞬発力訓練、実践的語彙練習、語彙活用トレーニング
+                        </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'vocabulary', 'advanced')" data-skill="vocabulary" data-level="advanced">
-
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
                             文脈に応じた表現の<br>使い分けができない
-
-
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 フォーマル・カジュアルの区別ができない、同義語の使い分けができない、ニュアンスが伝わらない
                                 <br><br>
                                 <strong>📝 対策アプローチ：</strong><br>
-                                文脈理解練習、表現力向上、高度な語彙運用
+                                文脈別語彙学習、表現力強化訓練、高度な語彙運用練習
                             </div>
                         </div>
                     </div>
@@ -1080,13 +900,20 @@
                 <p style="color: #666;" id="level-description">基礎語彙がある程度理解できるレベル（TOEIC 500-600）</p>
             </div>
             
+            <div style="margin: 20px 0;">
+                <h3 style="color: #333; margin-bottom: 15px;">📋 あなたの主な課題</h3>
+                <ul id="user-issues" style="background: #f8f9ff; padding: 20px; border-radius: 8px; color: #333;">
+                    <!-- 課題リストが動的に表示される -->
+                    </ul>
+            </div>
+            
             <div class="challenge-solution-grid" id="challenge-solution-grid">
                 <!-- 課題・対策・アプローチがセットで表示される -->
             </div>
             
             <div class="btn-container">
                 <button class="btn btn-back" onclick="prevScreen('diagnosis-screen')">戻る</button>
-                <button class="btn btn-primary" onclick="nextScreen('service-recommendation')">サービスを見る</button>
+                <button class="btn btn-primary" onclick="showServices()">サービスを見る</button>
             </div>
         </div>
         
@@ -1131,29 +958,202 @@
         </div>
     </div>
     
-    <!-- 課題詳細モーダル -->
-    <div class="modal" id="challenge-modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeChallengeModal()">&times;</span>
-            <div class="modal-title" id="modal-title">課題詳細</div>
-            <div class="modal-description" id="modal-description">
-                <!-- 課題の詳細説明がここに表示されます -->
-            </div>
-            <div class="modal-examples" id="modal-examples">
-                <!-- 具体例がここに表示されます -->
-            </div>
-        </div>
-    </div>
-    
     <script>
         // ユーザーの選択を保存
         let userSelections = {
-            toeic: null,
-            sound: null,
-            text: null,
-            vocabulary: null
+            toeic: null
         };
+
+        // 新しいデータ構造から選択されたスキルを取得するヘルパー関数
+        function getSelectedSkills() {
+            const skills = {sound: [], text: [], vocabulary: []};
+            
+            Object.keys(userSelections).forEach(key => {
+                if (key.includes('_') && userSelections[key] && userSelections[key].skill) {
+                    const skillData = userSelections[key];
+                    skills[skillData.skill].push(skillData.level);
+                }
+            });
+            
+            return skills;
+        }
+
+        // 特定のスキルで選択されているレベルを取得
+        function getSkillLevels(skillName) {
+            const skills = getSelectedSkills();
+            return skills[skillName] || [];
+        }
+
+        // スキルが選択されているかチェック
+        function hasSkillSelection(skillName, level = null) {
+            const levels = getSkillLevels(skillName);
+            if (level) {
+                return levels.includes(level);
+            }
+            return levels.length > 0;
+        }
         
+        // 画面遷移関数
+        function nextScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+            
+            // スキル診断画面から次に進む場合の処理
+            if (screenId === 'level-result') {
+                updateChallengeSolutionCards();
+                updateUserIssues();
+            }
+        }
+
+        // 前の画面に戻る関数
+        function prevScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // サービス推薦画面への遷移
+        function showServices() {
+            nextScreen('service-recommendation');
+            displayServices();
+            updateRecommendationTitle();
+        }
+
+        // 対策タブの表示
+        function showSolution(type) {
+            nextScreen('solution');
+            showSolutionTabs();
+        }
+
+        // サービス表示関数
+        function displayServices() {
+            console.log('🎯 displayServices called');
+            console.log('Current userSelections:', userSelections);
+            
+            const selectedServices = getFilteredServices();
+            console.log('🔍 Filtered services:', selectedServices);
+            console.log('📊 Service count:', selectedServices.length);
+            
+            updateRecommendationTitle();
+            const container = document.getElementById('services-container');
+            
+            if (!container) {
+                console.error('❌ services-container element not found!');
+                return;
+            }
+            
+            container.innerHTML = '';
+
+            if (selectedServices.length === 0) {
+                console.log('⚠️ No services found, showing default message');
+                container.innerHTML = '<div style="text-align: center; color: #666; padding: 40px;">課題を選択してからサービスを表示します</div>';
+                return;
+            }
+            
+            console.log('✅ Displaying services:', selectedServices.map(s => s.name));
+
+            selectedServices.forEach((service, index) => {
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                card.onclick = () => showServiceDetail(service);
+
+                const features = [
+                    ...service.tags.specialties,
+                    service.tags.learningStyle === 'self-study' ? '自主学習' :
+                    service.tags.learningStyle === 'instructor-led' ? '講師付き' :
+                    service.tags.learningStyle === 'ai-learning' ? 'AI学習' :
+                    service.tags.learningStyle === 'coaching' ? 'コーチング' : '学習サポート'
+                ];
+
+                card.innerHTML = `
+                    <div class="service-header">
+                        <span class="service-logo">${service.logo}</span>
+                        <div class="service-name">${service.name}</div>
+                        <div class="service-price">${service.price}</div>
+                    </div>
+                    <div class="service-features">
+                        ${features.slice(0, 3).map(feature => `<span class="feature-tag">${feature}</span>`).join('')}
+                    </div>
+                    <div class="service-toeic-level">
+                        対応レベル: ${service.tags.toeicLevels.join(', ')}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // スキル診断の選択機能
+        function selectDifficulty(element, skill, level) {
+            console.log('🔥 selectDifficulty called:', skill, level);
+            console.log('Element classes before:', element.className);
+            console.log('Current userSelections before:', userSelections);
+            
+            // 既に選択されている場合は選択を解除
+            if (element.classList.contains('selected')) {
+                console.log('🔴 Element is selected, deselecting...');
+                element.classList.remove('selected');
+                delete userSelections[skill + '_' + level];
+                console.log('🔴 Deselected:', skill, level);
+                
+                // 詳細が展開されている場合は閉じる
+                const cardDetails = element.querySelector('.card-details');
+                if (cardDetails && cardDetails.style.display !== 'none') {
+                    cardDetails.style.display = 'none';
+                    element.classList.remove('expanded');
+                }
+            } else {
+                console.log('🔵 Element is not selected, selecting...');
+                
+                // 縦横関係なく自由選択 - 他の選択を解除しない
+                console.log('🔍 Free selection mode - no restrictions');
+                
+                // 新しい選択を追加
+                element.classList.add('selected');
+                userSelections[skill + '_' + level] = {skill: skill, level: level};
+                console.log('🔵 Selected:', skill, level);
+                
+                // 詳細を展開
+                const cardDetails = element.querySelector('.card-details');
+                if (cardDetails) {
+                    cardDetails.style.display = 'block';
+                    element.classList.add('expanded');
+                }
+            }
+            
+            console.log('Element classes after:', element.className);
+            console.log('Current userSelections after:', userSelections);
+            
+            // 全体の選択状況を確認
+            const allSelected = document.querySelectorAll('.difficulty-btn.selected');
+            console.log('📊 Total selected buttons:', allSelected.length);
+            allSelected.forEach((btn, i) => {
+                console.log(`  ${i+1}. ${btn.dataset.skill} - ${btn.dataset.level}`);
+            });
+            
+            // 次へボタンの有効/無効を更新
+            updateSkillsNextButton();
+        }
+
+        // カード詳細の展開・折りたたみ機能
+        function toggleCardDetails(element) {
+            const card = element.closest ? element.closest('.expandable-card') : element;
+            const details = card.querySelector('.card-details');
+            
+            if (details) {
+                if (details.style.display === 'none' || details.style.display === '') {
+                    details.style.display = 'block';
+                    card.classList.add('expanded');
+                } else {
+                    details.style.display = 'none';
+                    card.classList.remove('expanded');
+                }
+            }
+        }
+
         // TOEIC選択機能
         function selectTOEIC(element, level) {
             // 既に選択されている場合は選択を解除
@@ -1298,98 +1298,20 @@
                 }
             }
         };
-        
-        // モーダル表示機能
-        let modalTimeout = null;
-        
-        function showChallengeModal(skill, level) {
-            // 既存のタイムアウトをクリア
-            if (modalTimeout) {
-                clearTimeout(modalTimeout);
-            }
-            
-            // 少し遅延してモーダルを表示（誤動作を防ぐため）
-            modalTimeout = setTimeout(() => {
-                const modal = document.getElementById('challenge-modal');
-                const title = document.getElementById('modal-title');
-                const description = document.getElementById('modal-description');
-                const examples = document.getElementById('modal-examples');
-                
-                if (challengeDetails[skill] && challengeDetails[skill][level]) {
-                    const data = challengeDetails[skill][level];
-                    
-                    title.textContent = data.title;
-                    description.textContent = data.description;
-                    
-                    examples.innerHTML = `
-                        <h4>具体例：</h4>
-                        <ul>
-                            ${data.examples.map(example => `<li>${example}</li>`).join('')}
-                        </ul>
-                    `;
-                    
-                    modal.classList.add('active');
-                }
-            }, 300);
-        }
-        
-        function closeChallengeModal() {
-            // タイムアウトをクリア
-            if (modalTimeout) {
-                clearTimeout(modalTimeout);
-                modalTimeout = null;
-            }
-            
-            const modal = document.getElementById('challenge-modal');
-            modal.classList.remove('active');
-        }
-        
-        // モーダル外クリックで閉じる
-        window.onclick = function(event) {
-            const modal = document.getElementById('challenge-modal');
-            if (event.target === modal) {
-                closeChallengeModal();
-            }
-        }
-        
-        // ページ読み込み後にイベントリスナーを設定
-        document.addEventListener('DOMContentLoaded', function() {
-            setupEventListeners();
-        });
-        
-        function setupEventListeners() {
-            // すべての difficulty-btn にマウスオーバーイベントを追加
-            const difficultyBtns = document.querySelectorAll('.difficulty-btn');
-            
-            difficultyBtns.forEach(btn => {
-                const skill = btn.getAttribute('data-skill');
-                const level = btn.getAttribute('data-level');
-                
-                if (skill && level) {
-                    btn.addEventListener('mouseenter', function() {
-                        showChallengeModal(skill, level);
-                    });
-                    
-                    btn.addEventListener('mouseleave', function() {
-                        closeChallengeModal();
-                    });
-                }
-            });
-        }
-        
+
         // カード詳細の展開・折りたたみ機能
         function toggleCardDetails(element) {
             const card = element.closest ? element.closest('.expandable-card') : element;
             const details = card.querySelector('.card-details');
             
-            if (details.classList.contains('active')) {
-                // 閉じる
-                details.classList.remove('active');
-                card.classList.remove('expanded');
-            } else {
-                // 開く
-                details.classList.add('active');
-                card.classList.add('expanded');
+            if (details) {
+                if (details.style.display === 'none' || details.style.display === '') {
+                    details.style.display = 'block';
+                    card.classList.add('expanded');
+                } else {
+                    details.style.display = 'none';
+                    card.classList.remove('expanded');
+                }
             }
         }
         
@@ -1399,14 +1321,22 @@
             const challengeSolutions = [];
             
             // 選択された課題に基づいてカードを生成
-            if (userSelections.sound) {
-                challengeSolutions.push(createChallengeSolutionCard('sound', userSelections.sound));
+            const selectedSkills = getSelectedSkills();
+            
+            if (selectedSkills.sound.length > 0) {
+                selectedSkills.sound.forEach(level => {
+                    challengeSolutions.push(createChallengeSolutionCard('sound', level));
+                });
             }
-            if (userSelections.text) {
-                challengeSolutions.push(createChallengeSolutionCard('text', userSelections.text));
+            if (selectedSkills.text.length > 0) {
+                selectedSkills.text.forEach(level => {
+                    challengeSolutions.push(createChallengeSolutionCard('text', level));
+                });
             }
-            if (userSelections.vocabulary) {
-                challengeSolutions.push(createChallengeSolutionCard('vocabulary', userSelections.vocabulary));
+            if (selectedSkills.vocabulary.length > 0) {
+                selectedSkills.vocabulary.forEach(level => {
+                    challengeSolutions.push(createChallengeSolutionCard('vocabulary', level));
+                });
             }
             
             container.innerHTML = challengeSolutions.join('');
@@ -1518,1018 +1448,290 @@
             selectedChallenge = { skill, level };
         }
         
-        // 選択された課題に基づいてサービスを絞り込み
+        // 🏷️ 新しいタグベースのサービスフィルタリング
         function getFilteredServices() {
-            if (!selectedChallenge) {
-                return [];
+            console.log('🏷️ タグベースフィルタリング開始');
+            console.log('Current userSelections:', userSelections);
+            
+            // ユーザーの選択からTOEICレベルを決定
+            const toeicLevel = getToeicLevelFromSelection();
+            console.log('📊 Determined TOEIC level:', toeicLevel);
+            
+            // 選択されたスキルと難易度を取得
+            const selectedSkills = [];
+            const selectedDifficulties = [];
+            
+            const skillsData = getSelectedSkills();
+            console.log('🎯 Skills data:', skillsData);
+            
+            if (skillsData.sound.length > 0) {
+                selectedSkills.push('sound');
+                selectedDifficulties.push(...skillsData.sound);
+            }
+            if (skillsData.text.length > 0) {
+                selectedSkills.push('text');
+                selectedDifficulties.push(...skillsData.text);
+            }
+            if (skillsData.vocabulary.length > 0) {
+                selectedSkills.push('vocabulary');
+                selectedDifficulties.push(...skillsData.vocabulary);
             }
             
-            const { skill, level } = selectedChallenge;
-            const filteredServices = [];
+            console.log('🎯 Selected skills:', selectedSkills);
+            console.log('🎯 Selected difficulties:', selectedDifficulties);
             
-            // 音声の課題の場合
-            if (skill === 'sound') {
-                if (level === 'basic') {
-                    // 基礎レベル：基礎固めサービス
-                    filteredServices.push(...services.basic);
-                } else if (level === 'intermediate' || level === 'advanced') {
-                    // 中級・上級レベル：音読トレーニング系
-                    filteredServices.push(...services.selfTraining.audioTraining);
+            // 選択がない場合はデフォルトサービスを返す
+            if (selectedSkills.length === 0) {
+                console.log('⚠️ スキル選択なし、デフォルトサービスを表示');
+                return allServices.slice(0, 6); // 最初の6つのサービス
+            }
+            
+            console.log('🔍 Total services available:', allServices.length);
+            allServices.forEach((service, i) => {
+                console.log(`Service ${i+1}: ${service.name} - Skills: ${service.tags.skills}, Difficulties: ${service.tags.difficulties}, TOEIC: ${service.tags.toeicLevels}`);
+            });
+            
+            console.log('Filtering criteria:', {
+                toeicLevel,
+                selectedSkills,
+                selectedDifficulties
+            });
+            
+            // サービスをフィルタリング
+            const filteredServices = allServices.filter(service => {
+                // TOEICレベルマッチ
+                const toeicMatch = service.tags.toeicLevels.includes(toeicLevel);
+                
+                // スキルマッチ（選択されたスキルのいずれかに対応）
+                const skillMatch = selectedSkills.some(skill => 
+                    service.tags.skills.includes(skill)
+                );
+                
+                // 難易度マッチ（選択された難易度のいずれかに対応）
+                const difficultyMatch = selectedDifficulties.some(difficulty => 
+                    service.tags.difficulties.includes(difficulty)
+                );
+                
+                const matches = toeicMatch && skillMatch && difficultyMatch;
+                
+                if (matches) {
+                    console.log(`✅ ${service.name} マッチ:`, {
+                        toeic: toeicMatch,
+                        skill: skillMatch,
+                        difficulty: difficultyMatch
+                    });
                 }
-            }
+                
+                return matches;
+            });
             
-            // 文章の課題の場合
-            if (skill === 'text') {
-                if (level === 'basic') {
-                    // 基礎レベル：基礎固めサービス
-                    filteredServices.push(...services.basic);
-                } else if (level === 'intermediate') {
-                    // 中級レベル：英作文系 + カランメソッド
-                    filteredServices.push(...services.selfTraining.writingTraining);
-                    filteredServices.push(...services.novaAlternative.callan);
-                } else if (level === 'advanced') {
-                    // 上級レベル：マーケットリーダー
-                    filteredServices.push(...services.novaAlternative.marketLeader);
-                    filteredServices.push(...services.advanced);
-                }
-            }
-            
-            // 語彙の課題の場合
-            if (skill === 'vocabulary') {
-                if (level === 'basic') {
-                    // 基礎レベル：基礎固めサービス
-                    filteredServices.push(...services.basic);
-                } else if (level === 'intermediate') {
-                    // 中級レベル：AIツール + 英作文系
-                    filteredServices.push(...services.selfTraining.aiTools);
-                    filteredServices.push(...services.selfTraining.writingTraining);
-                } else if (level === 'advanced') {
-                    // 上級レベル：マーケットリーダー + 上級サービス
-                    filteredServices.push(...services.novaAlternative.marketLeader);
-                    filteredServices.push(...services.advanced);
-                }
-            }
-            
-            // 重複を除去
-            const uniqueServices = filteredServices.filter((service, index, self) => 
-                index === self.findIndex(s => s.name === service.name)
-            );
-            
-            return uniqueServices;
+            console.log(`🎯 フィルタ結果: ${filteredServices.length}件のサービス`);
+            return filteredServices;
         }
         
-        // サービスデータ（画像を参考に拡充）
-        const services = {
-            // 自主トレーニング系
-            selfTraining: {
-                audioTraining: [
-                    {
-                        name: "SHADOTEN",
-                        description: "シャドーイングに特化した学習アプリ",
-                        features: ["シャドーイング", "発音", "音声"],
-
-                        price: "月額980円",
-                        logo: "🎧",
-                        category: "音読トレーニング系",
-                        approach: "自主トレーニング",
-                        details: {
-                            "学習内容": ["シャドーイング練習", "発音矯正", "音声認識", "リズム練習"],
-                            "特徴": ["シャドーイング特化", "音声認識機能", "レベル別教材", "進捗管理"]
-                        },
-                        url: "https://shadoten.com/"
-                    },
-                    {
-                        name: "Shadowing Buddy",
-                        description: "シャドーイング練習のパートナー",
-                        features: ["シャドーイング", "発音", "練習"],
-
-                        price: "月額1,480円",
-                        logo: "🎤",
-                        category: "音読トレーニング系",
-                        approach: "自主トレーニング",
-                        details: {
-                            "学習内容": ["シャドーイング練習", "発音矯正", "音声録音", "フィードバック"],
-                            "特徴": ["専用シャドーイング機能", "音声録音・再生", "発音評価", "練習記録"]
-                        },
-                        url: "https://shadowing-buddy.com/"
-                    },
-                    {
-                        name: "GOSAPO 音読トレーニング",
-                        description: "音読に特化したトレーニング",
-                        features: ["音読", "発音", "トレーニング"],
-
-                        price: "月額3,980円",
-                        logo: "📖",
-                        category: "音読トレーニング系",
-                        approach: "自主トレーニング",
-                        details: {
-                            "学習内容": ["音読トレーニング", "発音矯正", "リズム練習", "音声録音"],
-                            "特徴": ["音読特化", "科学的なアプローチ", "個人指導", "成果保証"]
-                        },
-                        url: "https://gosapo.jp/"
-                    }
-                ],
-                writingTraining: [
-                    {
-                        name: "SUPIFUL",
-                        description: "スピーキングに特化した学習",
-                        features: ["スピーキング", "英作文", "練習"],
-
-                        price: "月額2,980円",
-                        logo: "🗣️",
-                        category: "英作文系",
-                        approach: "自主トレーニング",
-                        details: {
-                            "学習内容": ["スピーキング練習", "英作文", "発音練習", "会話練習"],
-                            "特徴": ["スピーキング特化", "実践的な練習", "音声認識", "フィードバック"]
-                        },
-                        url: "https://supiful.com/"
-                    },
-                    {
-                        name: "TOEIC S&W対策アプリ",
-                        description: "TOEIC Speaking & Writing 対策",
-                        features: ["TOEIC", "スピーキング", "ライティング"],
-
-                        price: "月額2,480円",
-                        logo: "📝",
-                        category: "英作文系",
-                        approach: "自主トレーニング",
-                        details: {
-                            "学習内容": ["TOEIC S&W対策", "スピーキング練習", "ライティング練習", "模擬試験"],
-                            "特徴": ["TOEIC特化", "本番形式の練習", "スコア予測", "弱点分析"]
-                        },
-                        url: "https://toeic-sw.com/"
-                    },
-                    {
-                        name: "VERSANT対策アプリ",
-                        description: "VERSANT Speaking Test 対策",
-                        features: ["VERSANT", "スピーキング", "発話流暢性"],
-
-                        price: "月額1,980円",
-                        logo: "🎯",
-                        category: "英作文系",
-                        approach: "自主トレーニング",
-                        details: {
-                            "学習内容": ["VERSANT対策", "発話流暢性", "語彙力強化", "文構造練習"],
-                            "特徴": ["VERSANT特化", "AI評価", "即座のフィードバック", "弱点分析"]
-                        },
-                        url: "https://versant-prep.com/"
-                    }
-                ],
-                aiTools: [
-                    {
-                        name: "Speak",
-                        description: "スピーキング特化の学習アプリ",
-                        features: ["スピーキング", "AI", "練習"],
-
-                        price: "月額1,980円",
-                        logo: "🤖",
-                        category: "AIツール",
-                        approach: "自主トレーニング",
-                        details: {
-                            "学習内容": ["スピーキング練習", "AIとの会話", "発音練習", "語彙学習"],
-                            "特徴": ["AIとの会話練習", "音声認識", "発音評価", "レベル別教材"]
-                        },
-                        url: "https://speak.com/"
-                    },
-                    {
-                        name: "AI英会話 スピークバディ",
-                        description: "AIを使った基礎英会話練習",
-                        features: ["AI", "基礎", "24時間対応"],
-
-                        price: "月額3,980円",
-                        logo: "🤖",
-                        category: "AIツール",
-                        approach: "自主トレーニング",
-                        details: {
-                            "学習内容": ["AIとの英会話練習", "基礎文法学習", "発音練習", "語彙強化"],
-                            "特徴": ["24時間いつでも練習可能", "AIによる発音評価", "レベル別カリキュラム", "進捗管理機能"]
-                        },
-                        url: "https://speak-buddy.com/"
-                    },
-                    {
-                        name: "abceed",
-                        description: "TOEIC対策と基礎固めの両立が可能",
-                        features: ["TOEIC", "基礎対策", "アプリ学習"],
-
-                        price: "月額1,980円",
-                        logo: "📚",
-                        category: "AIツール",
-                        approach: "自主トレーニング",
-                        details: {
-                            "学習内容": ["TOEIC形式の問題演習", "基礎文法の復習", "語彙力強化", "リスニング練習"],
-                            "特徴": ["TOEICスコア予測機能", "弱点分析機能", "豊富な問題数", "音声付き解説"]
-                        },
-                        url: "https://abceed.com/"
-                    }
-                ],
-                eLearning: [
-                    {
-                        name: "パタプライングリッシュ",
-                        description: "パタプラ（パターンプラクティス）特化",
-                        features: ["文法", "パターン練習", "反復学習"],
-
-                        price: "月額2,480円",
-                        logo: "🔄",
-                        category: "eラーニング",
-                        approach: "自主トレーニング",
-                        details: {
-                            "学習内容": ["パターンプラクティス", "文法パターン習得", "反復練習", "自動化トレーニング"],
-                            "特徴": ["パターン特化", "科学的アプローチ", "段階的学習", "効果測定"]
-                        },
-                        url: "https://patapura.com/"
-                    }
-                ]
+        // TOEICレベルを選択から決定
+        function getToeicLevelFromSelection() {
+            // 直接TOEICレベルが選択されている場合
+            if (userSelections.toeic) {
+                const toeicMapping = {
+                    'basic': '300-600',
+                    'intermediate': '600-750', 
+                    'advanced': '750+'
+                };
+                return toeicMapping[userSelections.toeic] || '600-750';
+            }
+            
+            // スキル選択から推定
+            const skillsData = getSelectedSkills();
+            const difficulties = [
+                ...skillsData.sound,
+                ...skillsData.text, 
+                ...skillsData.vocabulary
+            ].filter(d => d !== null && d !== undefined);
+            
+            if (difficulties.length === 0) return '600-750'; // デフォルト
+            
+            const basicCount = difficulties.filter(d => d === 'basic').length;
+            const advancedCount = difficulties.filter(d => d === 'advanced').length;
+            
+            if (basicCount >= 2) return '300-600';
+            if (advancedCount >= 2) return '750+';
+            return '600-750';
+        }
+        
+        // 📊 CSVから更新されたタグベースのサービスデータ
+        const allServices = [
+            {
+                name: "スタディサプリ ENGLISH",
+                price: "月額2,178円",
+                logo: "📚",
+                tags: {
+                    toeicLevels: ["300-600"],
+                    skills: ["sound", "text", "vocabulary"],
+                    difficulties: ["basic"],
+                    learningStyle: "self-study",
+                    specialties: ["\u30b9\u30de\u30db\u5b66\u7fd2\u30fbAI\u5b66\u7fd2\u30fb\u9032\u6357\u7ba1\u7406"]
+                },
+                    details: {
+                    "学習内容": ["基本単語学習", "基礎固め・発音練習", "基礎文法・読解"],
+                    "特徴": ["スマホ学習・AI学習・進捗管理"]
+                },
+                url: "https://eigosapuri.jp/"
             },
-            // NOVA代替
-            novaAlternative: {
-                callan: [
-                    {
-                        name: "NativeCamp.",
-                        description: "瞬間英作文に特化したレッスン",
-                        features: ["瞬間英作文", "英会話", "無制限"],
-
-                        price: "月額6,480円",
-                        logo: "🎯",
-                        category: "カランメソッド",
-                        approach: "NOVA代替",
-                        details: {
-                            "学習内容": ["瞬間英作文練習", "カランメソッド実践", "日常会話練習", "発音矯正"],
-                            "特徴": ["無制限レッスン", "予約不要で即座にレッスン", "多国籍講師", "アプリで簡単操作"]
-                        },
-                        url: "https://nativecamp.net/"
-                    },
-                    {
-                        name: "QQ English",
-                        description: "カランメソッド特化の英会話",
-                        features: ["カランメソッド", "英会話", "フィリピン"],
-
-                        price: "月額5,980円",
-                        logo: "💬",
-                        category: "カランメソッド",
-                        approach: "NOVA代替",
-                        details: {
-                            "学習内容": ["カランメソッド実践", "瞬間英作文", "日常会話", "文法練習"],
-                            "特徴": ["カランメソッド特化", "フィリピン講師", "24時間対応", "レベル別教材"]
-                        },
-                        url: "https://qqenglish.com/"
-                    }
-                ],
-                marketLeader: [
-                    {
-                        name: "Bizmates",
-                        description: "ビジネス英語に特化した上級者向けサービス",
-                        features: ["ビジネス英語", "上級者向け", "専門コース"],
-
-                        price: "月額15,000円〜",
-                        logo: "💼",
-                        category: "マーケットリーダー",
-                        approach: "NOVA代替",
-                        details: {
-                            "学習内容": ["ビジネス英語", "プレゼンテーション", "交渉英語", "専門分野英語"],
-                            "特徴": ["ビジネス特化", "実践的な内容", "専門講師", "企業研修対応"]
-                        },
-                        url: "https://www.bizmates.jp/"
-                    },
-                    {
-                        name: "DMMビジネスコース",
-                        description: "DMM英会話のビジネス特化コース",
-                        features: ["ビジネス英語", "DMM", "専門コース"],
-
-                        price: "月額8,980円〜",
-                        logo: "💼",
-                        category: "マーケットリーダー",
-                        approach: "NOVA代替",
-                        details: {
-                            "学習内容": ["ビジネス英会話", "プレゼンテーション", "会議英語", "メール作成"],
-                            "特徴": ["ビジネス特化", "豊富な教材", "多国籍講師", "24時間対応"]
-                        },
-                        url: "https://eikaiwa.dmm.com/business/"
-                    }
-                ]
+            {
+                name: "abceed",
+                price: "月額1,650円",
+                logo: "📱",
+                tags: {
+                    toeicLevels: ["300-600"],
+                    skills: ["sound", "text", "vocabulary"],
+                    difficulties: ["basic"],
+                    learningStyle: "self-study",
+                    specialties: ["AI\u4e88\u6e2c\u30b9\u30b3\u30a2\u30fb\u8c4a\u5bcc\u306a\u554f\u984c\u96c6"]
+                },
+                    details: {
+                    "学習内容": ["基本単語学習", "基礎固め・発音練習", "基礎文法・読解"],
+                    "特徴": ["AI予測スコア・豊富な問題集"]
+                },
+                url: "https://www.abceed.com/"
             },
-            basic: [
-                {
-                    name: "スタディサプリ ENGLISH",
-                    description: "音のルール、文章のルール、基本的な単語など、中学/高校のおさらいが中心",
-                    features: ["発音", "文法", "語彙", "自学習向け"],
-
-                    price: "月額1,980円",
-                    logo: "📱",
-                    category: "基礎対策",
-                    details: {
-                        "学習内容": [
-                            "中学・高校レベルの基礎文法",
-                            "基本単語・熟語の習得",
-                            "発音の基本ルール",
-                            "TOEIC対策問題"
-                        ],
-                        "特徴": [
-                            "いつでもどこでも学習可能",
-                            "レベル別の学習プラン",
-                            "音声付きで発音練習",
-                            "進捗管理機能"
-                        ]
-                    },
-                    url: "https://eigosapuri.jp/"
-                },
-                {
-                    name: "abceed",
-                    description: "TOEIC対策と基礎固めの両立が可能",
-                    features: ["TOEIC", "基礎対策", "アプリ学習"],
-
-                    price: "月額1,980円",
-                    logo: "📚",
-                    category: "基礎対策",
-                    details: {
-                        "学習内容": [
-                            "TOEIC形式の問題演習",
-                            "基礎文法の復習",
-                            "語彙力強化",
-                            "リスニング練習"
-                        ],
-                        "特徴": [
-                            "TOEICスコア予測機能",
-                            "弱点分析機能",
-                            "豊富な問題数",
-                            "音声付き解説"
-                        ]
-                    },
-                    url: "https://abceed.com/"
-                },
-                {
-                    name: "DMM英会話",
-                    description: "基礎から始める英会話レッスン",
-                    features: ["英会話", "基礎", "フィリピン講師"],
-
-                    price: "月額6,480円〜",
+            {
+                name: "DMM英会話",
+                price: "月額5,450円",
                     logo: "💬",
-                    category: "基礎対策",
-                    details: {
-                        "学習内容": [
-                            "基礎英会話レッスン",
-                            "日常会話練習",
-                            "発音矯正",
-                            "文法基礎"
-                        ],
-                        "特徴": [
-                            "24時間レッスン可能",
-                            "フィリピン講師中心",
-                            "豊富な教材",
-                            "レベル別カリキュラム"
-                        ]
-                    },
-                    url: "https://eikaiwa.dmm.com/"
+                tags: {
+                    toeicLevels: ["300-600", "600-750"],
+                    skills: ["sound", "text"],
+                    difficulties: ["basic", "intermediate"],
+                    learningStyle: "instructor-led",
+                    specialties: ["\u591a\u56fd\u7c4d\u8b1b\u5e2b\u30fb24\u6642\u9593\u5bfe\u5fdc"]
                 },
-                {
-                    name: "AI英会話 スピークバディ",
-                    description: "AIを使った基礎英会話練習",
-                    features: ["AI", "基礎", "24時間対応"],
-
-                    price: "月額3,980円",
-                    logo: "🤖",
-                    category: "基礎対策",
                     details: {
-                        "学習内容": [
-                            "AIとの英会話練習",
-                            "基礎文法学習",
-                            "発音練習",
-                            "語彙強化"
-                        ],
-                        "特徴": [
-                            "24時間いつでも練習可能",
-                            "AIによる発音評価",
-                            "レベル別カリキュラム",
-                            "進捗管理機能"
-                        ]
-                    },
-                    url: "https://speak-buddy.com/"
+                    "学習内容": ["ビジネス英会話", "基礎文法・会話練習", "日常英会話", "発音練習・基礎会話"],
+                    "特徴": ["多国籍講師・24時間対応"]
                 },
-                {
-                    name: "cooori",
-                    description: "世界に向けた英語力を身につける",
-                    features: ["世界対応", "基礎", "コミュニケーション"],
-
-                    price: "月額4,980円",
-                    logo: "🌏",
-                    category: "基礎対策",
-                    details: {
-                        "学習内容": [
-                            "基礎英語コミュニケーション",
-                            "文化理解",
-                            "実践的な英語",
-                            "グローバル対応"
-                        ],
-                        "特徴": [
-                            "多国籍講師",
-                            "文化理解重視",
-                            "実践的な内容",
-                            "グローバル視点"
-                        ]
-                    },
-                    url: "https://cooori.com/"
-                }
-            ],
-            sound: [
-                {
-                    name: "SHADOTEN",
-                    description: "シャドーイングに特化した学習アプリ",
-                    features: ["シャドーイング", "発音", "音声"],
-
-                    price: "月額980円",
-                    logo: "🎧",
-                    category: "音読トレーニング系",
-                    approach: "自主トレーニング",
-                    details: {
-                        "学習内容": [
-                            "シャドーイング練習",
-                            "発音矯正",
-                            "音声認識",
-                            "リズム練習"
-                        ],
-                        "特徴": [
-                            "シャドーイング特化",
-                            "音声認識機能",
-                            "レベル別教材",
-                            "進捗管理"
-                        ]
-                    },
-                    url: "https://shadoten.com/"
+                url: "https://eikaiwa.dmm.com/"
+            },
+            {
+                name: "SHADOTEN",
+                price: "月額21,780円",
+                logo: "🎯",
+                tags: {
+                    toeicLevels: ["600-750", "750+"],
+                    skills: ["sound"],
+                    difficulties: ["advanced", "intermediate"],
+                    learningStyle: "self-study",
+                    specialties: ["\u30d7\u30ed\u6dfb\u524a\u30fb\u97f3\u58f0\u5206\u6790"]
                 },
-                {
-                    name: "Shadowing Buddy",
-                    description: "シャドーイング練習のパートナー",
-                    features: ["シャドーイング", "発音", "練習"],
-
-                    price: "月額1,480円",
-                    logo: "🎤",
-                    category: "音の対策",
                     details: {
-                        "学習内容": [
-                            "シャドーイング練習",
-                            "発音矯正",
-                            "音声録音",
-                            "フィードバック"
-                        ],
-                        "特徴": [
-                            "専用シャドーイング機能",
-                            "音声録音・再生",
-                            "発音評価",
-                            "練習記録"
-                        ]
-                    },
-                    url: "https://shadowing-buddy.com/"
+                    "学習内容": ["シャドーイング訓練"],
+                    "特徴": ["プロ添削・音声分析"]
                 },
-                {
-                    name: "EnglishCentral",
-                    description: "動画を使った発音練習",
-                    features: ["動画", "発音", "リスニング"],
-
-                    price: "月額2,980円",
-                    logo: "🎬",
-                    category: "音の対策",
-                    details: {
-                        "学習内容": [
-                            "動画を使った発音練習",
-                            "リスニング強化",
-                            "音声認識",
-                            "発音矯正"
-                        ],
-                        "特徴": [
-                            "豊富な動画コンテンツ",
-                            "音声認識機能",
-                            "発音評価",
-                            "レベル別教材"
-                        ]
-                    },
-                    url: "https://www.englishcentral.com/"
+                url: "https://www.shadoten.com/"
+            },
+            {
+                name: "AI英会話 スピークバディ",
+                price: "月額3,300円",
+                logo: "🤖",
+                tags: {
+                    toeicLevels: ["300-600", "600-750"],
+                    skills: ["vocabulary"],
+                    difficulties: ["basic", "intermediate"],
+                    learningStyle: "ai-learning",
+                    specialties: ["24\u6642\u9593\u5229\u7528\u30fb\u6065\u305a\u304b\u3057\u304f\u306a\u3044"]
                 },
-                {
-                    name: "GOSAPO 音読トレーニング",
-                    description: "音読に特化したトレーニング",
-                    features: ["音読", "発音", "トレーニング"],
-
-                    price: "月額3,980円",
-                    logo: "📖",
-                    category: "音の対策",
                     details: {
-                        "学習内容": [
-                            "音読トレーニング",
-                            "発音矯正",
-                            "リズム練習",
-                            "音声録音"
-                        ],
-                        "特徴": [
-                            "音読特化",
-                            "科学的なアプローチ",
-                            "個人指導",
-                            "成果保証"
-                        ]
-                    },
-                    url: "https://gosapo.jp/"
+                    "学習内容": ["語彙定着練習", "語彙活用練習"],
+                    "特徴": ["24時間利用・恥ずかしくない"]
                 },
-                {
-                    name: "WiLLies English",
-                    description: "ウィリーズ英語塾の音声特化コース",
-                    features: ["音声", "発音", "塾"],
-
-                    price: "月額8,980円",
-                    logo: "🎓",
-                    category: "音の対策",
-                    details: {
-                        "学習内容": [
-                            "発音矯正",
-                            "音声練習",
-                            "シャドーイング",
-                            "個人指導"
-                        ],
-                        "特徴": [
-                            "専門塾での指導",
-                            "個人指導",
-                            "発音特化",
-                            "成果重視"
-                        ]
-                    },
-                    url: "https://willies-english.com/"
-                },
-                {
-                    name: "PROGRIT",
-                    description: "音声に特化したコーチング",
-                    features: ["コーチング", "音声", "個人指導"],
-
-                    price: "月額19,800円",
-                    logo: "🎯",
-                    category: "音の対策",
-                    details: {
-                        "学習内容": [
-                            "音声コーチング",
-                            "発音矯正",
-                            "個人指導",
-                            "成果管理"
-                        ],
-                        "特徴": [
-                            "専任コーチ",
-                            "個人指導",
-                            "成果保証",
-                            "科学的アプローチ"
-                        ]
-                    },
-                    url: "https://progrit.co.jp/"
-                },
-                {
-                    name: "TEPPEN ENGLISH",
-                    description: "音声特化の英語学習",
-                    features: ["音声", "発音", "学習"],
-
-                    price: "月額4,980円",
-                    logo: "🏔️",
-                    category: "音の対策",
-                    details: {
-                        "学習内容": [
-                            "音声学習",
-                            "発音練習",
-                            "リスニング",
-                            "音声認識"
-                        ],
-                        "特徴": [
-                            "音声特化",
-                            "最新技術活用",
-                            "個人対応",
-                            "効果測定"
-                        ]
-                    },
-                    url: "https://teppen-english.com/"
-                }
-            ],
-            grammar: [
-                {
-                    name: "NativeCamp.",
-                    description: "瞬間英作文に特化したレッスン",
-                    features: ["瞬間英作文", "英会話", "無制限"],
-
-                    price: "月額6,480円",
-                    logo: "🎯",
-                    category: "短い文章と語彙の対策",
-                    details: {
-                        "学習内容": [
-                            "瞬間英作文練習",
-                            "カランメソッド実践",
-                            "日常会話練習",
-                            "発音矯正"
-                        ],
-                        "特徴": [
-                            "無制限レッスン",
-                            "予約不要で即座にレッスン",
-                            "多国籍講師",
-                            "アプリで簡単操作"
-                        ]
-                    },
-                    url: "https://nativecamp.net/"
-                },
-                {
-                    name: "QQ English",
-                    description: "カランメソッド特化の英会話",
-                    features: ["カランメソッド", "英会話", "フィリピン"],
-
-                    price: "月額5,980円",
-                    logo: "💬",
-                    category: "短い文章と語彙の対策",
-                    details: {
-                        "学習内容": [
-                            "カランメソッド実践",
-                            "瞬間英作文",
-                            "日常会話",
-                            "文法練習"
-                        ],
-                        "特徴": [
-                            "カランメソッド特化",
-                            "フィリピン講師",
-                            "24時間対応",
-                            "レベル別教材"
-                        ]
-                    },
-                    url: "https://qqenglish.com/"
-                },
-                {
-                    name: "PATAPURA",
-                    description: "パタプライングリッシュの文法特化コース",
-                    features: ["文法", "英作文", "学習"],
-
-                    price: "月額3,980円",
-                    logo: "📝",
-                    category: "短い文章と語彙の対策",
-                    details: {
-                        "学習内容": [
-                            "文法学習",
-                            "英作文練習",
-                            "語彙強化",
-                            "文構造理解"
-                        ],
-                        "特徴": [
-                            "文法特化",
-                            "体系的学習",
-                            "練習問題豊富",
-                            "理解度チェック"
-                        ]
-                    },
-                    url: "https://patapura.com/"
-                },
-                {
-                    name: "SUPIFUL",
-                    description: "スピーキングに特化した学習",
-                    features: ["スピーキング", "英作文", "練習"],
-
-                    price: "月額2,980円",
-                    logo: "🗣️",
-                    category: "短い文章と語彙の対策",
-                    details: {
-                        "学習内容": [
-                            "スピーキング練習",
-                            "英作文",
-                            "発音練習",
-                            "会話練習"
-                        ],
-                        "特徴": [
-                            "スピーキング特化",
-                            "実践的な練習",
-                            "音声認識",
-                            "フィードバック"
-                        ]
-                    },
-                    url: "https://supiful.com/"
-                },
-                {
-                    name: "GOSAPO AI添削",
-                    description: "AIによる英作文添削",
-                    features: ["AI添削", "英作文", "文法"],
-
-                    price: "月額1,980円",
-                    logo: "✏️",
-                    category: "短い文章と語彙の対策",
-                    details: {
-                        "学習内容": [
-                            "AI英作文添削",
-                            "文法チェック",
-                            "表現改善",
-                            "語彙提案"
-                        ],
-                        "特徴": [
-                            "AIによる即座の添削",
-                            "詳細な文法解説",
-                            "表現の改善提案",
-                            "学習記録"
-                        ]
-                    },
-                    url: "https://gosapo.jp/"
+                url: "https://www.speakbuddy.me/"
                 },
                 {
                     name: "Speak",
-                    description: "スピーキング特化の学習アプリ",
-                    features: ["スピーキング", "AI", "練習"],
-
-                    price: "月額1,980円",
-                    logo: "🎤",
-                    category: "短い文章と語彙の対策",
-                    details: {
-                        "学習内容": [
-                            "スピーキング練習",
-                            "AIとの会話",
-                            "発音練習",
-                            "語彙学習"
-                        ],
-                        "特徴": [
-                            "AIとの会話練習",
-                            "音声認識",
-                            "発音評価",
-                            "レベル別教材"
-                        ]
-                    },
-                    url: "https://speak.com/"
+                price: "月額1,800円",
+                logo: "🗣️",
+                tags: {
+                    toeicLevels: ["600-750", "750+"],
+                    skills: ["vocabulary"],
+                    difficulties: ["advanced", "intermediate"],
+                    learningStyle: "ai-learning",
+                    specialties: ["\u9ad8\u7cbe\u5ea6AI\u30fb\u5b9f\u8df5\u7684"]
                 },
-                {
-                    name: "DiaTalk",
-                    description: "対話型の英語学習",
-                    features: ["対話", "英会話", "練習"],
-
-                    price: "月額3,980円",
-                    logo: "💭",
-                    category: "短い文章と語彙の対策",
                     details: {
-                        "学習内容": [
-                            "対話練習",
-                            "英会話",
-                            "文法練習",
-                            "語彙強化"
-                        ],
-                        "特徴": [
-                            "対話型学習",
-                            "実践的な内容",
-                            "レベル別対応",
-                            "進捗管理"
-                        ]
-                    },
-                    url: "https://diatalk.com/"
+                    "学習内容": ["表現力向上"],
+                    "特徴": ["高精度AI・実践的"]
                 },
-                {
-                    name: "TORAIZ",
-                    description: "英作文特化の学習サービス",
-                    features: ["英作文", "文法", "添削"],
-
-                    price: "月額4,980円",
-                    logo: "📚",
-                    category: "短い文章と語彙の対策",
+                url: "https://www.speak.com/"
+            },
+            {
+                name: "SUPIFUL",
+                price: "月額4,378円",
+                logo: "✍️",
+                tags: {
+                    toeicLevels: ["600-750", "750+"],
+                    skills: ["text", "vocabulary"],
+                    difficulties: ["advanced", "intermediate"],
+                    learningStyle: "self-study",
+                    specialties: ["AI\u6dfb\u524a\u30fb\u30a2\u30a6\u30c8\u30d7\u30c3\u30c8\u91cd\u8996"]
+                },
                     details: {
-                        "学習内容": [
-                            "英作文練習",
-                            "文法学習",
-                            "添削指導",
-                            "語彙強化"
-                        ],
-                        "特徴": [
-                            "英作文特化",
-                            "専門添削",
-                            "レベル別指導",
-                            "成果重視"
-                        ]
-                    },
-                    url: "https://toraiz.com/"
-                }
-            ],
-            advanced: [
-                {
-                    name: "Cambly",
-                    description: "ネイティブ講師との自由な会話で上級者向け",
-                    features: ["ネイティブ", "自由会話", "上級者向け"],
-
-                    price: "月額12,000円〜",
-                    logo: "🌍",
-                    category: "長い文章と表現の対策",
+                    "学習内容": ["英作文練習・スピーキング訓練", "表現力向上"],
+                    "特徴": ["AI添削・アウトプット重視"]
+                },
+                url: "https://supiful.com/"
+            },
+            {
+                name: "QQ English",
+                price: "月額2,980円",
+                logo: "⚡",
+                tags: {
+                    toeicLevels: ["600-750", "750+"],
+                    skills: ["sound", "text"],
+                    difficulties: ["advanced", "intermediate"],
+                    learningStyle: "instructor-led",
+                    specialties: ["\u9ad8\u901f\u5b66\u7fd2\u30fb\u96c6\u4e2d\u8a13\u7df4"]
+                },
                     details: {
-                        "学習内容": [
-                            "ネイティブとの自由会話",
-                            "ビジネス英語",
-                            "専門分野の英語",
-                            "文化的な表現"
-                        ],
-                        "特徴": [
-                            "ネイティブ講師のみ",
-                            "自由な会話スタイル",
-                            "専門分野対応",
-                            "文化的な学習"
-                        ]
-                    },
-                    url: "https://www.cambly.com/"
+                    "学習内容": ["カランメソッド・4倍速学習", "瞬間英作文"],
+                    "特徴": ["高速学習・集中訓練"]
+                },
+                url: "https://www.qqeng.com/"
                 },
                 {
                     name: "Bizmates",
-                    description: "ビジネス英語に特化した上級者向けサービス",
-                    features: ["ビジネス英語", "上級者向け", "専門コース"],
-
-                    price: "月額15,000円〜",
+                price: "月額13,200円",
                     logo: "💼",
-                    category: "長い文章と表現の対策",
+                tags: {
+                    toeicLevels: ["750+"],
+                    skills: ["text", "vocabulary"],
+                    difficulties: ["advanced"],
+                    learningStyle: "instructor-led",
+                    specialties: ["\u30d3\u30b8\u30cd\u30b9\u7279\u5316\u30fb\u5b9f\u52d9\u7d4c\u9a13\u8b1b\u5e2b"]
+                },
                     details: {
-                        "学習内容": [
-                            "ビジネス英語",
-                            "プレゼンテーション",
-                            "交渉英語",
-                            "専門分野英語"
-                        ],
-                        "特徴": [
-                            "ビジネス特化",
-                            "実践的な内容",
-                            "専門講師",
-                            "企業研修対応"
-                        ]
+                    "学習内容": ["ビジネス英会話・プレゼン練習", "ビジネス語彙・交渉スキル"],
+                    "特徴": ["ビジネス特化・実務経験講師"]
                     },
                     url: "https://www.bizmates.jp/"
                 },
                 {
-                    name: "Bizmates Coaching",
-                    description: "ビジネス英語の専門コーチング",
-                    features: ["コーチング", "ビジネス", "専門"],
-
-                    price: "月額25,000円〜",
-                    logo: "🎯",
-                    category: "長い文章と表現の対策",
-                    details: {
-                        "学習内容": [
-                            "ビジネス英語コーチング",
-                            "プレゼンテーション指導",
-                            "交渉スキル",
-                            "専門分野英語"
-                        ],
-                        "特徴": [
-                            "専門コーチング",
-                            "ビジネス特化",
-                            "個人指導",
-                            "成果保証"
-                        ]
-                    },
-                    url: "https://www.bizmates.jp/"
+                name: "Native Camp",
+                price: "月額6,480円",
+                logo: "🌍",
+                tags: {
+                    toeicLevels: ["600-750", "750+"],
+                    skills: ["text"],
+                    difficulties: ["advanced", "intermediate"],
+                    learningStyle: "self-study",
+                    specialties: []
                 },
-                {
-                    name: "Cambly Pr",
-                    description: "Camblyのプレミアムサービス",
-                    features: ["プレミアム", "ネイティブ", "上級者"],
-
-                    price: "月額18,000円〜",
-                    logo: "⭐",
-                    category: "長い文章と表現の対策",
                     details: {
-                        "学習内容": [
-                            "プレミアム英会話",
-                            "専門分野英語",
-                            "文化的学習",
-                            "高度な表現"
-                        ],
-                        "特徴": [
-                            "プレミアムサービス",
-                            "専門講師",
-                            "高度な内容",
-                            "個人対応"
-                        ]
-                    },
-                    url: "https://www.cambly.com/"
+                    "学習内容": ["カランメソッド・4倍速学習"],
+                    "特徴": []
                 },
-                {
-                    name: "cts コーチング",
-                    description: "コミュニケーショントレーニングサポートの専門コーチング",
-                    features: ["コーチング", "専門", "個人指導"],
-
-                    price: "月額30,000円〜",
-                    logo: "🎓",
-                    category: "長い文章と表現の対策",
-                    details: {
-                        "学習内容": [
-                            "専門コーチング",
-                            "高度な英語表現",
-                            "文化的理解",
-                            "実践的なコミュニケーション"
-                        ],
-                        "特徴": [
-                            "専門コーチング",
-                            "個人指導",
-                            "成果保証",
-                            "継続サポート"
-                        ]
-                    },
-                    url: "https://cts-coaching.com/"
-                }
-            ]
-        };
-        
-        function nextScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            document.getElementById(screenId).classList.add('active');
-            
-            // レベル結果画面の場合、動的に内容を更新
-            if (screenId === 'level-result') {
-                updateLevelResult();
+                url: "https://nativecamp.net/"
             }
-            // サービス推奨画面の場合、サービスを表示
-            else if (screenId === 'service-recommendation') {
-                displayServices();
-            }
-        }
-        
-        function prevScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            document.getElementById(screenId).classList.add('active');
-        }
-        
-        function selectDifficulty(element, skill, level) {
-            console.log('selectDifficulty called:', skill, level);
-            
-            // モーダルを閉じる
-            closeChallengeModal();
-            
-            // 既に選択されている場合は詳細を展開/収縮
-            if (element.classList.contains('selected')) {
-                // 詳細を展開/収縮
-                toggleCardDetails(element);
-            } else {
-                // 同じスキルカテゴリの他のボタンの選択を解除
-                const skillGrid = element.closest('.skill-grid');
-                const difficultyOptions = element.parentElement;
-                const siblings = difficultyOptions.querySelectorAll('.difficulty-btn');
-                
-                siblings.forEach(sibling => {
-                    sibling.classList.remove('selected');
-                    sibling.classList.remove('expanded');
-                    const details = sibling.querySelector('.card-details');
-                    if (details) details.classList.remove('active');
-                });
-                
-                // 新しい選択を追加
-                element.classList.add('selected');
-                userSelections[skill] = level;
-                console.log('Selected:', skill, level);
-                
-                // 詳細を表示
-                toggleCardDetails(element);
-            }
-            
-            // 次へボタンの有効/無効を更新
-            updateSkillsNextButton();
-            
-            console.log('Current selections:', userSelections);
-        }
-        
-        function showSolution(type) {
-            // タブの切り替え
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // コンテンツの切り替え
-            document.getElementById('pronunciation-solution').style.display = 'none';
-            document.getElementById('grammar-solution').style.display = 'none';
-            
-            if (type === 'pronunciation') {
-                document.getElementById('pronunciation-solution').style.display = 'block';
-            } else {
-                document.getElementById('grammar-solution').style.display = 'block';
-            }
-        }
-        
-        function displayServices() {
-            // 選択された課題に基づいてサービスを決定
-            const selectedServices = getFilteredServices();
-            
-            // レベルに応じたタイトルを更新
-            updateRecommendationTitle();
-            
-            // サービスカードを生成
-            const container = document.getElementById('services-container');
-            container.innerHTML = '';
-            
-            if (selectedServices.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: #666; padding: 40px;">課題を選択してからサービスを表示します</div>';
-                return;
-            }
-            
-            selectedServices.forEach((service, index) => {
-                const card = document.createElement('div');
-                card.className = 'service-card';
-                card.onclick = () => showServiceDetail(service);
-                
-                card.innerHTML = `
-                    <div class="service-name">${service.name}</div>
-                    <div class="service-description">${service.description}</div>
-                    <div class="service-features">
-                        ${service.features.map(feature => `<span class="feature-tag">${feature}</span>`).join('')}
-                    </div>
-                `;
-                
-                container.appendChild(card);
-            });
-        }
+        ];
         
         function updateRecommendationTitle() {
             const level = determineUserLevel();
@@ -2547,13 +1749,15 @@
             
             // 選択された内容に基づいてサブタイトルを更新
             const selectedCategories = [];
-            if (userSelections.sound === 'basic') selectedCategories.push('基礎対策');
-            if (userSelections.sound === 'intermediate' || userSelections.sound === 'advanced') selectedCategories.push('音の対策');
-            if (userSelections.text === 'intermediate' || userSelections.text === 'advanced' || 
-                userSelections.vocabulary === 'intermediate' || userSelections.vocabulary === 'advanced') {
+            const skillsData = getSelectedSkills();
+            
+            if (hasSkillSelection('sound', 'basic')) selectedCategories.push('基礎対策');
+            if (hasSkillSelection('sound', 'intermediate') || hasSkillSelection('sound', 'advanced')) selectedCategories.push('音の対策');
+            if (hasSkillSelection('text', 'intermediate') || hasSkillSelection('text', 'advanced') || 
+                hasSkillSelection('vocabulary', 'intermediate') || hasSkillSelection('vocabulary', 'advanced')) {
                 selectedCategories.push('短い文章と語彙の対策');
             }
-            if (userSelections.text === 'advanced' || userSelections.vocabulary === 'advanced') {
+            if (hasSkillSelection('text', 'advanced') || hasSkillSelection('vocabulary', 'advanced')) {
                 selectedCategories.push('長い文章と表現の対策');
             }
             
@@ -2565,44 +1769,8 @@
         }
         
         function getSelectedServices() {
-            const selectedServices = [];
-            
-            // 選択された内容に基づいてサービスを追加
-            if (userSelections.sound === 'basic') {
-                selectedServices.push(...services.basic.filter(s => s.category === '基礎対策'));
-            } else if (userSelections.sound === 'intermediate') {
-                selectedServices.push(...services.sound);
-            } else if (userSelections.sound === 'advanced') {
-                selectedServices.push(...services.advanced.filter(s => s.category === '長い文章と表現の対策'));
-            }
-            
-            if (userSelections.text === 'basic') {
-                selectedServices.push(...services.basic.filter(s => s.category === '基礎対策'));
-            } else if (userSelections.text === 'intermediate') {
-                selectedServices.push(...services.grammar);
-            } else if (userSelections.text === 'advanced') {
-                selectedServices.push(...services.advanced.filter(s => s.category === '長い文章と表現の対策'));
-            }
-            
-            if (userSelections.vocabulary === 'basic') {
-                selectedServices.push(...services.basic.filter(s => s.category === '基礎対策'));
-            } else if (userSelections.vocabulary === 'intermediate') {
-                selectedServices.push(...services.grammar);
-            } else if (userSelections.vocabulary === 'advanced') {
-                selectedServices.push(...services.advanced.filter(s => s.category === '長い文章と表現の対策'));
-            }
-            
-            // 重複を除去
-            const uniqueServices = selectedServices.filter((service, index, self) => 
-                index === self.findIndex(s => s.name === service.name)
-            );
-            
-            // デフォルトのサービスを追加（選択がない場合）
-            if (uniqueServices.length === 0) {
-                uniqueServices.push(...services.basic.slice(0, 3));
-            }
-            
-            return uniqueServices;
+            // 新しいタグベースシステムを使用
+            return getFilteredServices();
         }
         
         function determineUserLevel() {
@@ -2667,7 +1835,7 @@
             const tabs = [];
             const contents = {};
             
-            if (userSelections.sound === 'intermediate' || userSelections.sound === 'advanced') {
+            if (hasSkillSelection('sound', 'intermediate') || hasSkillSelection('sound', 'advanced')) {
                 tabs.push({ id: 'sound', name: '音の対策' });
                 contents.sound = [
                     '音を再現できる（発話できる）ことがゴール',
@@ -2676,8 +1844,8 @@
                 ];
             }
             
-            if (userSelections.text === 'intermediate' || userSelections.text === 'advanced' || 
-                userSelections.vocabulary === 'intermediate' || userSelections.vocabulary === 'advanced') {
+            if (hasSkillSelection('text', 'intermediate') || hasSkillSelection('text', 'advanced') || 
+                hasSkillSelection('vocabulary', 'intermediate') || hasSkillSelection('vocabulary', 'advanced')) {
                 tabs.push({ id: 'grammar', name: '短い文章と語彙の対策' });
                 contents.grammar = [
                     'とにかく英語の文章をクイックに組むこと',
@@ -2686,7 +1854,7 @@
                 ];
             }
             
-            if (userSelections.text === 'advanced' || userSelections.vocabulary === 'advanced') {
+            if (hasSkillSelection('text', 'advanced') || hasSkillSelection('vocabulary', 'advanced')) {
                 tabs.push({ id: 'advanced', name: '長い文章と表現の対策' });
                 contents.advanced = [
                     'クイックに構造化すること',
@@ -2755,29 +1923,37 @@
         function updateUserIssues() {
             const issues = [];
             
-            if (userSelections.sound === 'basic') {
+            const skillsData = getSelectedSkills();
+            
+            skillsData.sound.forEach(level => {
+                if (level === 'basic') {
                 issues.push('基本的な音のルールがわからない');
-            } else if (userSelections.sound === 'intermediate') {
+                } else if (level === 'intermediate') {
                 issues.push('音が聞き分けられない、音が回らない');
-            } else if (userSelections.sound === 'advanced') {
+                } else if (level === 'advanced') {
                 issues.push('スピードについていけない、長くなると保持できない');
             }
+            });
             
-            if (userSelections.text === 'basic') {
+            skillsData.text.forEach(level => {
+                if (level === 'basic') {
                 issues.push('基本的な文のルール（文法）がわからない');
-            } else if (userSelections.text === 'intermediate') {
+                } else if (level === 'intermediate') {
                 issues.push('文章で理解できない、文を組み立てられない');
-            } else if (userSelections.text === 'advanced') {
+                } else if (level === 'advanced') {
                 issues.push('情報量が多くなると理解できない/話せない');
             }
+            });
             
-            if (userSelections.vocabulary === 'basic') {
+            skillsData.vocabulary.forEach(level => {
+                if (level === 'basic') {
                 issues.push('基本的な単語がわからない');
-            } else if (userSelections.vocabulary === 'intermediate') {
+                } else if (level === 'intermediate') {
                 issues.push('とっさに簡単な単語が出てこない');
-            } else if (userSelections.vocabulary === 'advanced') {
+                } else if (level === 'advanced') {
                 issues.push('文脈に応じた表現の使い分けができない');
             }
+            });
             
             // デフォルトの課題を設定
             if (issues.length === 0) {
@@ -2792,9 +1968,23 @@
         
         function updateSkillsNextButton() {
             const nextBtn = document.getElementById('skills-next-btn');
-            const hasSkillSelection = userSelections.sound || userSelections.text || userSelections.vocabulary;
+            // 新しいデータ構造: skill_level 形式のキーをカウント
+            const selectedSkills = Object.keys(userSelections).filter(key => 
+                key.includes('_') && userSelections[key] && userSelections[key].skill
+            );
+            const hasSkillSelection = selectedSkills.length > 0;
             
-            console.log('Updating skills next button:', hasSkillSelection);
+            console.log('=== updateSkillsNextButton ===');
+            console.log('Selected skills:', selectedSkills);
+            console.log('Has skill selection:', hasSkillSelection);
+            console.log('Full userSelections:', userSelections);
+            
+            // 現在選択されている要素も確認
+            const selectedElements = document.querySelectorAll('.difficulty-btn.selected');
+            console.log('Selected elements count:', selectedElements.length);
+            selectedElements.forEach((el, index) => {
+                console.log(`Selected element ${index}:`, el.dataset.skill, el.dataset.level);
+            });
             
             if (hasSkillSelection) {
                 nextBtn.disabled = false;
@@ -2807,6 +1997,7 @@
                 nextBtn.style.cursor = 'not-allowed';
                 console.log('Next button disabled');
             }
+            console.log('=== End updateSkillsNextButton ===');
         }
         
         function showServiceDetail(service) {
