@@ -137,9 +137,13 @@
         }
         
         .difficulty-btn.selected {
-            border-color: #667eea;
-            background: #667eea;
-            color: white;
+            border-color: #667eea !important;
+            background: #667eea !important;
+            color: white !important;
+        }
+        
+        .difficulty-btn.selected:hover {
+            background: #5a6fd8 !important;
         }
         
         /* ステージ表示 */
@@ -756,13 +760,13 @@
                         <span class="skill-icon">🎧</span> 音声
                     </div>
                     <div class="difficulty-options">
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'basic')" onmouseover="showChallengeModal('sound', 'basic')" onmouseout="closeChallengeModal()" title="マウスオーバーで詳細表示">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'basic')" data-skill="sound" data-level="basic" title="マウスオーバーで詳細表示">
                             基本的なルールが<br>わからない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'intermediate')" onmouseover="showChallengeModal('sound', 'intermediate')" onmouseout="closeChallengeModal()" title="マウスオーバーで詳細表示">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'intermediate')" data-skill="sound" data-level="intermediate" title="マウスオーバーで詳細表示">
                             音が聞き分けられない<br>音が回らない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'advanced')" onmouseover="showChallengeModal('sound', 'advanced')" onmouseout="closeChallengeModal()" title="マウスオーバーで詳細表示">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'sound', 'advanced')" data-skill="sound" data-level="advanced" title="マウスオーバーで詳細表示">
                             スピードについていけない<br>長くなると保持できない
                         </div>
                     </div>
@@ -771,13 +775,13 @@
                         <span class="skill-icon">📝</span> 文章
                     </div>
                     <div class="difficulty-options">
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'basic')" onmouseover="showChallengeModal('text', 'basic')" onmouseout="closeChallengeModal()" title="マウスオーバーで詳細表示">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'basic')" data-skill="text" data-level="basic" title="マウスオーバーで詳細表示">
                             基本的な文のルール<br>（文法）がわからない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'intermediate')" onmouseover="showChallengeModal('text', 'intermediate')" onmouseout="closeChallengeModal()" title="マウスオーバーで詳細表示">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'intermediate')" data-skill="text" data-level="intermediate" title="マウスオーバーで詳細表示">
                             文章で理解できない<br>文を組み立てられない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'advanced')" onmouseover="showChallengeModal('text', 'advanced')" onmouseout="closeChallengeModal()" title="マウスオーバーで詳細表示">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'text', 'advanced')" data-skill="text" data-level="advanced" title="マウスオーバーで詳細表示">
                             情報量が多くなると<br>理解できない/話せない
                         </div>
                     </div>
@@ -786,13 +790,13 @@
                         <span class="skill-icon">📖</span> 語彙
                     </div>
                     <div class="difficulty-options">
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'basic')" onmouseover="showChallengeModal('vocabulary', 'basic')" onmouseout="closeChallengeModal()" title="マウスオーバーで詳細表示">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'basic')" data-skill="vocabulary" data-level="basic" title="マウスオーバーで詳細表示">
                             基本的な単語が<br>わからない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'intermediate')" onmouseover="showChallengeModal('vocabulary', 'intermediate')" onmouseout="closeChallengeModal()" title="マウスオーバーで詳細表示">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'intermediate')" data-skill="vocabulary" data-level="intermediate" title="マウスオーバーで詳細表示">
                             とっさに簡単な<br>単語が出てこない
                         </div>
-                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'advanced')" onmouseover="showChallengeModal('vocabulary', 'advanced')" onmouseout="closeChallengeModal()" title="マウスオーバーで詳細表示">
+                        <div class="difficulty-btn" onclick="selectDifficulty(this, 'vocabulary', 'advanced')" data-skill="vocabulary" data-level="advanced" title="マウスオーバーで詳細表示">
                             文脈に応じた表現の<br>使い分けができない
                         </div>
                     </div>
@@ -1049,28 +1053,46 @@
         };
         
         // モーダル表示機能
+        let modalTimeout = null;
+        
         function showChallengeModal(skill, level) {
-            const modal = document.getElementById('challenge-modal');
-            const title = document.getElementById('modal-title');
-            const description = document.getElementById('modal-description');
-            const examples = document.getElementById('modal-examples');
+            // 既存のタイムアウトをクリア
+            if (modalTimeout) {
+                clearTimeout(modalTimeout);
+            }
             
-            const data = challengeDetails[skill][level];
-            
-            title.textContent = data.title;
-            description.textContent = data.description;
-            
-            examples.innerHTML = `
-                <h4>具体例：</h4>
-                <ul>
-                    ${data.examples.map(example => `<li>${example}</li>`).join('')}
-                </ul>
-            `;
-            
-            modal.classList.add('active');
+            // 少し遅延してモーダルを表示（誤動作を防ぐため）
+            modalTimeout = setTimeout(() => {
+                const modal = document.getElementById('challenge-modal');
+                const title = document.getElementById('modal-title');
+                const description = document.getElementById('modal-description');
+                const examples = document.getElementById('modal-examples');
+                
+                if (challengeDetails[skill] && challengeDetails[skill][level]) {
+                    const data = challengeDetails[skill][level];
+                    
+                    title.textContent = data.title;
+                    description.textContent = data.description;
+                    
+                    examples.innerHTML = `
+                        <h4>具体例：</h4>
+                        <ul>
+                            ${data.examples.map(example => `<li>${example}</li>`).join('')}
+                        </ul>
+                    `;
+                    
+                    modal.classList.add('active');
+                }
+            }, 300);
         }
         
         function closeChallengeModal() {
+            // タイムアウトをクリア
+            if (modalTimeout) {
+                clearTimeout(modalTimeout);
+                modalTimeout = null;
+            }
+            
             const modal = document.getElementById('challenge-modal');
             modal.classList.remove('active');
         }
@@ -1081,6 +1103,31 @@
             if (event.target === modal) {
                 closeChallengeModal();
             }
+        }
+        
+        // ページ読み込み後にイベントリスナーを設定
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // すべての difficulty-btn にマウスオーバーイベントを追加
+            const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+            
+            difficultyBtns.forEach(btn => {
+                const skill = btn.getAttribute('data-skill');
+                const level = btn.getAttribute('data-level');
+                
+                if (skill && level) {
+                    btn.addEventListener('mouseenter', function() {
+                        showChallengeModal(skill, level);
+                    });
+                    
+                    btn.addEventListener('mouseleave', function() {
+                        closeChallengeModal();
+                    });
+                }
+            });
         }
         
         // 課題・対策・アプローチカードを更新
@@ -2133,24 +2180,36 @@
         }
         
         function selectDifficulty(element, skill, level) {
+            console.log('selectDifficulty called:', skill, level);
+            
+            // モーダルを閉じる
+            closeChallengeModal();
+            
             // 既に選択されている場合は選択を解除
             if (element.classList.contains('selected')) {
                 element.classList.remove('selected');
                 userSelections[skill] = null;
+                console.log('Deselected:', skill);
             } else {
-                // 同じ行の他のボタンの選択を解除
-                const siblings = element.parentElement.children;
-                for (let sibling of siblings) {
+                // 同じスキルカテゴリの他のボタンの選択を解除
+                const skillGrid = element.closest('.skill-grid');
+                const difficultyOptions = element.parentElement;
+                const siblings = difficultyOptions.querySelectorAll('.difficulty-btn');
+                
+                siblings.forEach(sibling => {
                     sibling.classList.remove('selected');
-                }
+                });
                 
                 // 新しい選択を追加
                 element.classList.add('selected');
                 userSelections[skill] = level;
+                console.log('Selected:', skill, level);
             }
             
             // 次へボタンの有効/無効を更新
             updateSkillsNextButton();
+            
+            console.log('Current selections:', userSelections);
         }
         
         function showSolution(type) {
@@ -2467,14 +2526,18 @@
             const nextBtn = document.getElementById('skills-next-btn');
             const hasSkillSelection = userSelections.sound || userSelections.text || userSelections.vocabulary;
             
+            console.log('Updating skills next button:', hasSkillSelection);
+            
             if (hasSkillSelection) {
                 nextBtn.disabled = false;
                 nextBtn.style.opacity = '1';
                 nextBtn.style.cursor = 'pointer';
+                console.log('Next button enabled');
             } else {
                 nextBtn.disabled = true;
                 nextBtn.style.opacity = '0.5';
                 nextBtn.style.cursor = 'not-allowed';
+                console.log('Next button disabled');
             }
         }
         
