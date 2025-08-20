@@ -102,6 +102,10 @@
             margin: 30px 0;
         }
         
+        .skill-row {
+            display: contents;
+        }
+        
         .skill-label {
             display: flex;
             align-items: center;
@@ -117,6 +121,7 @@
         .difficulty-options {
             display: flex;
             gap: 10px;
+            align-items: flex-start;
         }
         
         .difficulty-btn {
@@ -622,16 +627,26 @@
         
         .tooltip-description {
             margin-bottom: 12px;
-            color: #ddd;
+            color: #e8e8e8;
         }
         
         .tooltip-examples {
             font-size: 13px;
-            color: #bbb;
+            color: #d0d0d0;
         }
         
         .tooltip-examples strong {
             color: #fff;
+        }
+        
+        /* 主な課題部分の文字色を改善 */
+        .card-details strong {
+            color: #2c3e50 !important;
+            font-weight: 600;
+        }
+        
+        .card-details {
+            color: #495057 !important;
         }
         
         /* 展開可能なカード */
@@ -644,6 +659,7 @@
             background: #f8f9ff;
             border-color: #667eea;
             padding: 20px;
+            align-self: flex-start;
         }
         
         .card-details {
@@ -665,10 +681,12 @@
             from {
                 opacity: 0;
                 max-height: 0;
+                padding-top: 0;
             }
             to {
                 opacity: 1;
                 max-height: 200px;
+                padding-top: 15px;
             }
         }
         
@@ -900,7 +918,7 @@
                     </div>
                     <div class="difficulty-options">
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'sound', 'basic')" data-skill="sound" data-level="basic">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this)" title="詳細を表示">?</div>
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">?</div>
                             基本的なルールが<br>わからない
                             <div class="tooltip-content">
                                 <div class="tooltip-title">🎧 音声：基本的なルール</div>
@@ -912,7 +930,7 @@
                                     • アクセントの位置がわからない
                                 </div>
                             </div>
-                            <button class="info-button" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)">詳細を見る</button>
+
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 発音記号が読めない、子音・母音の区別がつかない、アクセントの位置がわからない
@@ -922,7 +940,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'sound', 'intermediate')" data-skill="sound" data-level="intermediate">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this)" title="詳細を表示">?</div>
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">?</div>
                             音が聞き分けられない<br>音が回らない
                             <div class="tooltip-content">
                                 <div class="tooltip-title">🎧 音声：聞き分け・発音</div>
@@ -934,7 +952,7 @@
                                     • 単語レベルでの発音が不正確
                                 </div>
                             </div>
-                            <button class="info-button" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)">詳細を見る</button>
+
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 L/Rの区別ができない、TH音が発音できない、単語レベルでの発音が不正確
@@ -944,7 +962,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'sound', 'advanced')" data-skill="sound" data-level="advanced">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this)" title="詳細を表示">?</div>
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">?</div>
                             スピードについていけない<br>長くなると保持できない
                             <div class="tooltip-content">
                                 <div class="tooltip-title">🎧 音声：スピード・保持</div>
@@ -956,7 +974,7 @@
                                     • 音声情報の処理が追いつかない
                                 </div>
                             </div>
-                            <button class="info-button" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)">詳細を見る</button>
+
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 ネイティブの会話についていけない、長い説明を覚えていられない、音声情報の処理が追いつかない
@@ -972,7 +990,7 @@
                     </div>
                     <div class="difficulty-options">
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'text', 'basic')" data-skill="text" data-level="basic">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this)" title="詳細を表示">?</div>
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">?</div>
                             基本的な文のルール<br>（文法）がわからない
                             <div class="tooltip-content">
                                 <div class="tooltip-title">📝 文章：基本文法</div>
@@ -984,7 +1002,7 @@
                                     • 品詞の区別ができない
                                 </div>
                             </div>
-                            <button class="info-button" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)">詳細を見る</button>
+
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 時制の概念がわからない、語順が理解できない、品詞の区別ができない
@@ -994,7 +1012,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'text', 'intermediate')" data-skill="text" data-level="intermediate">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this)" title="詳細を表示">?</div>
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">?</div>
                             文章で理解できない<br>文を組み立てられない
                             <div class="tooltip-content">
                                 <div class="tooltip-title">📝 文章：読解・作文</div>
@@ -1006,7 +1024,7 @@
                                     • 文脈が理解できない
                                 </div>
                             </div>
-                            <button class="info-button" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)">詳細を見る</button>
+
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 長い文が読めない、正しい文が作れない、文脈が理解できない
@@ -1016,7 +1034,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'text', 'advanced')" data-skill="text" data-level="advanced">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this)" title="詳細を表示">?</div>
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">?</div>
                             情報量が多くなると<br>理解できない/話せない
                             <div class="tooltip-content">
                                 <div class="tooltip-title">📝 文章：複雑な情報処理</div>
@@ -1028,7 +1046,7 @@
                                     • 情報整理ができない
                                 </div>
                             </div>
-                            <button class="info-button" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)">詳細を見る</button>
+
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 長文読解が困難、複雑な議論ができない、情報整理ができない
@@ -1044,7 +1062,7 @@
                     </div>
                     <div class="difficulty-options">
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'vocabulary', 'basic')" data-skill="vocabulary" data-level="basic">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this)" title="詳細を表示">?</div>
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">?</div>
                             基本的な単語が<br>わからない
                             <div class="tooltip-content">
                                 <div class="tooltip-title">📖 語彙：基本単語</div>
@@ -1056,7 +1074,7 @@
                                     • 単語の意味が曖昧
                                 </div>
                             </div>
-                            <button class="info-button" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)">詳細を見る</button>
+
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 高頻出単語がわからない、基本的な動詞・名詞が不明、単語の意味が曖昧
@@ -1066,7 +1084,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'vocabulary', 'intermediate')" data-skill="vocabulary" data-level="intermediate">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this)" title="詳細を表示">?</div>
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">?</div>
                             とっさに簡単な<br>単語が出てこない
                             <div class="tooltip-content">
                                 <div class="tooltip-title">📖 語彙：瞬発力</div>
@@ -1078,7 +1096,7 @@
                                     • 語彙の活用ができない
                                 </div>
                             </div>
-                            <button class="info-button" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)">詳細を見る</button>
+
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 会話で単語が出てこない、理解はできるが使えない、語彙の活用ができない
@@ -1088,7 +1106,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'vocabulary', 'advanced')" data-skill="vocabulary" data-level="advanced">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this)" title="詳細を表示">?</div>
+                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">?</div>
                             文脈に応じた表現の<br>使い分けができない
                             <div class="tooltip-content">
                                 <div class="tooltip-title">📖 語彙：文脈適応</div>
@@ -1100,7 +1118,7 @@
                                     • ニュアンスが伝わらない
                                 </div>
                             </div>
-                            <button class="info-button" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)">詳細を見る</button>
+
                             <div class="card-details">
                                 <strong>🎯 主な課題：</strong><br>
                                 フォーマル・カジュアルの区別ができない、同義語の使い分けができない、ニュアンスが伝わらない
@@ -1444,18 +1462,15 @@
         function toggleCardDetails(element) {
             const card = element.closest ? element.closest('.expandable-card') : element;
             const details = card.querySelector('.card-details');
-            const infoButton = card.querySelector('.info-button');
             
             if (details.classList.contains('active')) {
                 // 閉じる
                 details.classList.remove('active');
                 card.classList.remove('expanded');
-                if (infoButton) infoButton.textContent = '詳細を見る';
             } else {
                 // 開く
                 details.classList.add('active');
                 card.classList.add('expanded');
-                if (infoButton) infoButton.textContent = '詳細を閉じる';
             }
         }
         
