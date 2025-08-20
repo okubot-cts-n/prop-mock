@@ -918,7 +918,7 @@
                     </div>
                     <div class="difficulty-options">
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'sound', 'basic')" data-skill="sound" data-level="basic">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
+
                             基本的なルールが<br>わからない
 
 
@@ -931,7 +931,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'sound', 'intermediate')" data-skill="sound" data-level="intermediate">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
+
                             音が聞き分けられない<br>音が回らない
 
 
@@ -944,7 +944,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'sound', 'advanced')" data-skill="sound" data-level="advanced">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
+
                             スピードについていけない<br>長くなると保持できない
 
 
@@ -963,7 +963,7 @@
                     </div>
                     <div class="difficulty-options">
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'text', 'basic')" data-skill="text" data-level="basic">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
+
                             基本的な文のルール<br>（文法）がわからない
 
 
@@ -976,7 +976,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'text', 'intermediate')" data-skill="text" data-level="intermediate">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
+
                             文章で理解できない<br>文を組み立てられない
 
 
@@ -989,7 +989,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'text', 'advanced')" data-skill="text" data-level="advanced">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
+
                             情報量が多くなると<br>理解できない/話せない
 
 
@@ -1008,7 +1008,7 @@
                     </div>
                     <div class="difficulty-options">
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'vocabulary', 'basic')" data-skill="vocabulary" data-level="basic">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
+
                             基本的な単語が<br>わからない
 
 
@@ -1021,7 +1021,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'vocabulary', 'intermediate')" data-skill="vocabulary" data-level="intermediate">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
+
                             とっさに簡単な<br>単語が出てこない
 
 
@@ -1034,7 +1034,7 @@
                             </div>
                         </div>
                         <div class="difficulty-btn expandable-card" onclick="selectDifficulty(this, 'vocabulary', 'advanced')" data-skill="vocabulary" data-level="advanced">
-                            <div class="help-icon" onclick="event.stopPropagation(); toggleCardDetails(this.parentElement)" title="詳細を表示">i</div>
+
                             文脈に応じた表現の<br>使い分けができない
 
 
@@ -2448,11 +2448,10 @@
             // モーダルを閉じる
             closeChallengeModal();
             
-            // 既に選択されている場合は選択を解除
+            // 既に選択されている場合は詳細を展開/収縮
             if (element.classList.contains('selected')) {
-                element.classList.remove('selected');
-                userSelections[skill] = null;
-                console.log('Deselected:', skill);
+                // 詳細を展開/収縮
+                toggleCardDetails(element);
             } else {
                 // 同じスキルカテゴリの他のボタンの選択を解除
                 const skillGrid = element.closest('.skill-grid');
@@ -2461,12 +2460,18 @@
                 
                 siblings.forEach(sibling => {
                     sibling.classList.remove('selected');
+                    sibling.classList.remove('expanded');
+                    const details = sibling.querySelector('.card-details');
+                    if (details) details.classList.remove('active');
                 });
                 
                 // 新しい選択を追加
                 element.classList.add('selected');
                 userSelections[skill] = level;
                 console.log('Selected:', skill, level);
+                
+                // 詳細を表示
+                toggleCardDetails(element);
             }
             
             // 次へボタンの有効/無効を更新
