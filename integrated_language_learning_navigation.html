@@ -12,25 +12,25 @@
         }
         
         body {
-            font-family: 'Hiragino Sans', 'Yu Gothic UI', sans-serif;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #f5f7fa;
             min-height: 100vh;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 20px;
         }
         
         .screen {
             background: white;
-            border-radius: 20px;
+            border-radius: 8px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 30px 0;
             display: none;
             animation: slideIn 0.5s ease-out;
         }
@@ -56,9 +56,9 @@
         }
         
         .logo {
-            color: #2c3e50;
-            font-size: 36px;
-            font-weight: bold;
+            color: #003d7a;
+            font-size: 32px;
+            font-weight: 500;
             margin-bottom: 10px;
         }
         
@@ -78,7 +78,7 @@
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #0056b3, #003d7a);
             transition: width 0.5s ease;
         }
         
@@ -92,12 +92,13 @@
         
         .main-card {
             background: white;
-            border: 3px solid #e9ecef;
-            border-radius: 20px;
-            padding: 40px;
+            border: 2px solid #e5e8eb;
+            border-radius: 8px;
+            padding: 30px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             min-height: 250px;
             display: flex;
             flex-direction: column;
@@ -105,14 +106,14 @@
         }
         
         .main-card:hover {
-            border-color: #667eea;
-            transform: translateY(-8px);
-            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.3);
+            border-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,86,179, 0.12);
         }
         
         .main-card.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #0056b3;
+            background: linear-gradient(135deg, #003d7a 0%, #0056b3 100%);
             color: white;
         }
         
@@ -142,24 +143,25 @@
         }
         
         .approach-card {
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 16px;
-            padding: 35px;
+            background: white;
+            border: 1px solid #e5e8eb;
+            border-radius: 8px;
+            padding: 25px;
             cursor: pointer;
             transition: all 0.3s;
-            min-height: 300px;
+            min-height: 280px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         .approach-card:hover {
-            border-color: #667eea;
+            border-color: #0056b3;
             background: white;
             transform: translateY(-3px);
         }
         
         .approach-card.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #0056b3;
+            background: linear-gradient(135deg, #003d7a 0%, #0056b3 100%);
             color: white;
         }
         
@@ -196,8 +198,8 @@
         }
         
         .approach-card:not(.selected) .feature-tag {
-            background: #e3f2fd;
-            color: #1976d2;
+            background: #e8f4ff;
+            color: #0056b3;
         }
         
         /* TOEIC レベル選択 */
@@ -210,22 +212,24 @@
         
         .toeic-level-card {
             background: white;
-            border: 2px solid #dee2e6;
-            border-radius: 12px;
-            padding: 25px;
+            border: 1px solid #e5e8eb;
+            border-radius: 8px;
+            padding: 20px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         .toeic-level-card:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
+            border-color: #0056b3;
+            background: #f5f7fa;
+            transform: translateY(-2px);
         }
         
         .toeic-level-card.selected {
-            border-color: #667eea;
-            background: #667eea;
+            border-color: #0056b3;
+            background: #0056b3;
             color: white;
         }
         
@@ -250,22 +254,24 @@
         
         .language-card {
             background: white;
-            border: 2px solid #dee2e6;
-            border-radius: 12px;
-            padding: 25px;
+            border: 1px solid #e5e8eb;
+            border-radius: 8px;
+            padding: 20px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         .language-card:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
+            border-color: #0056b3;
+            background: #f5f7fa;
+            transform: translateY(-2px);
         }
         
         .language-card.selected {
-            border-color: #667eea;
-            background: #667eea;
+            border-color: #0056b3;
+            background: #0056b3;
             color: white;
         }
         
@@ -392,13 +398,14 @@
         }
         
         .tool-type-card:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
+            border-color: #0056b3;
+            background: #f5f7fa;
+            transform: translateY(-2px);
         }
         
         .tool-type-card.selected {
-            border-color: #667eea;
-            background: #667eea;
+            border-color: #0056b3;
+            background: #0056b3;
             color: white;
         }
         
@@ -422,17 +429,18 @@
         
         .service-card {
             background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 16px;
-            padding: 25px;
+            border: 1px solid #e5e8eb;
+            border-radius: 8px;
+            padding: 20px;
             transition: all 0.3s;
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         .service-card:hover {
-            border-color: #667eea;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,86,179, 0.12);
         }
         
         .service-header {
@@ -458,7 +466,7 @@
         }
         
         .service-price {
-            color: #667eea;
+            color: #0056b3;
             font-weight: bold;
             font-size: 16px;
         }
@@ -478,8 +486,8 @@
         }
         
         .service-features .feature-tag {
-            background: #e3f2fd;
-            color: #1976d2;
+            background: #e8f4ff;
+            color: #0056b3;
             padding: 4px 8px;
             border-radius: 12px;
             font-size: 11px;
@@ -518,13 +526,13 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #003d7a 0%, #0056b3 100%);
             color: white;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 16px rgba(0, 86, 179, 0.3);
         }
         
         .btn-primary:disabled {
@@ -553,7 +561,7 @@
         <!-- 画面1: 言語種類選択 -->
         <div class="screen active" id="language-type-selection">
             <div class="header">
-                <div class="logo">🌐 統合言語学習ナビ</div>
+                <div class="logo">🌐 村田製作所 語学学習ナビゲーション</div>
                 <div class="subtitle">学習したい言語の種類を選択してください</div>
             </div>
             
