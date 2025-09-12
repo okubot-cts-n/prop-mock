@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>村田製作所 - 語学自己啓発ポータル</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ヘッダー */
+        header {
+            background: linear-gradient(135deg, #003d7a 0%, #0056b3 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .header-nav a:hover {
+            opacity: 0.8;
+        }
+
+        /* 画面切り替え */
+        .screen {
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* メインビジュアル */
+        .hero {
+            background: white;
+            padding: 40px 0;
+            border-bottom: 1px solid #e5e8eb;
+        }
+
+        .hero h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #003d7a;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #0056b3;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* ナビゲーション選択画面 */
+        .navigation-section {
+            background: white;
+            padding: 40px 0;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-title {
+            text-align: center;
+            font-size: 24px;
+            color: #003d7a;
+            margin-bottom: 30px;
+        }
+
+        .nav-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .nav-selection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .nav-card {
+            background: white;
+            border: 2px solid #e5e8eb;
+            border-radius: 8px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .nav-card:hover {
+            border-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,86,179, 0.12);
+        }
+
+        .nav-card.selected {
+            border-color: #0056b3;
+            background: linear-gradient(135deg, #003d7a 0%, #0056b3 100%);
+            color: white;
+        }
+
+        .nav-card-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .nav-card-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .nav-card-description {
+            font-size: 16px;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+
+        /* 診断フロー */
+        .diagnosis-section {
+            background: white;
+            padding: 40px 0;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .diagnosis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .diagnosis-card {
+            background: white;
+            border: 1px solid #e5e8eb;
+            border-radius: 8px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .diagnosis-card:hover {
+            border-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,86,179, 0.12);
+        }
+
+        .diagnosis-card.selected {
+            border-color: #0056b3;
+            background: #0056b3;
+            color: white;
+        }
+
+        .diagnosis-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .diagnosis-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .diagnosis-card.selected .diagnosis-description {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* ツール一覧画面 */
+        .filter-section {
+            background: white;
+            padding: 30px 0;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e5e8eb;
+        }
+
+        .filter-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .filter-tab.active {
+            color: #0056b3;
+            border-bottom-color: #0056b3;
+            font-weight: 500;
+        }
+
+        .filter-tab:hover {
+            background: #f5f7fa;
+        }
+
+        .sub-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .sub-filter-btn {
+            padding: 8px 16px;
+            background: #f5f7fa;
+            border: 1px solid #e5e8eb;
+            border-radius: 20px;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sub-filter-btn.active {
+            background: #0056b3;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .sub-filter-btn:hover {
+            border-color: #0056b3;
+        }
+
+        /* カードグリッド */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .vendor-logo {
+            width: 60px;
+            height: 60px;
+            background: #f5f7fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+
+        .card-badges {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: flex-end;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .badge.cts {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge.external {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .badge.recommended {
+            background: #0056b3;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-category {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .category-tag {
+            padding: 4px 10px;
+            background: #e8f4ff;
+            color: #0056b3;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .card-info {
+            flex-grow: 1;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .info-label {
+            color: #666;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .price {
+            color: #0056b3;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #0056b3;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #003d7a;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0056b3;
+            border: 1px solid #0056b3;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f7fa;
+        }
+
+        .btn-large {
+            padding: 15px 30px;
+            font-size: 16px;
+            margin: 10px;
+            min-width: 150px;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        /* プログレスバー */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e8eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0056b3, #003d7a);
+            transition: width 0.5s ease;
+        }
+
+        /* FAQ & サポート */
+        .support-section {
+            background: white;
+            padding: 40px 0;
+            margin-top: 40px;
+            border-radius: 8px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #003d7a;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .support-card {
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .support-icon {
+            width: 60px;
+            height: 60px;
+            background: #0056b3;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .support-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .support-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .faq-list {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .faq-item {
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .faq-question {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .faq-answer {
+            color: #666;
+            font-size: 14px;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* フッター */
+        footer {
+            background: #003d7a;
+            color: white;
+            padding: 20px 0;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-selection-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .diagnosis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>村田製作所 語学自己啓発ポータル</h1>
+                <nav class="header-nav">
+                    <a href="#navigation">学習診断</a>
+                    <a href="#tools">学習ツール</a>
+                    <a href="#faq">よくある質問</a>
+                    <a href="#support">サポート</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 学習診断画面 -->
+    <div class="screen active" id="navigation-screen">
+        <!-- メインビジュアル -->
+        <section class="hero">
+            <div class="container">
+                <h2>あなたに最適な語学学習ツールを見つけましょう</h2>
+                <p>目的とレベルに合わせた診断で、最適な学習プランをご提案します。</p>
+                
+                <!-- プログレスバー -->
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 20%;"></div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">22</div>
+                        <div class="stat-label">提携企業数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">学習プラン</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">対応言語</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 言語選択 -->
+        <section class="navigation-section" id="language-selection">
+            <div class="container">
+                <h3 class="nav-title">学習したい言語を選択してください</h3>
+                <p class="nav-subtitle">あなたの学習目的に最も適した言語を選んでください</p>
+                
+                <div class="nav-selection-grid">
+                    <div class="nav-card" onclick="selectLanguage('english')">
+                        <div class="nav-card-icon">🇬🇧</div>
+                        <div class="nav-card-title">英語</div>
+                        <div class="nav-card-description">
+                            基礎重視・TOEIC対策または会話・実践重視の<br>
+                            2つのアプローチから選択できます
+                        </div>
+                    </div>
+                    <div class="nav-card" onclick="selectLanguage('multilingual')">
+                        <div class="nav-card-icon">🌍</div>
+                        <div class="nav-card-title">多言語</div>
+                        <div class="nav-card-description">
+                            中国語、ドイツ語、フランス語、タイ語、<br>
+                            ベトナム語、韓国語から選択できます
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <button class="btn btn-primary btn-large" id="next-btn-1" onclick="nextStep()" disabled>次へ進む</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 英語アプローチ選択 -->
+        <section class="navigation-section" id="english-approach" style="display: none;">
+            <div class="container">
+                <h3 class="nav-title">英語学習のアプローチを選択してください</h3>
+                <p class="nav-subtitle">あなたの学習スタイルに合ったアプローチを選んでください</p>
+                
+                <div class="nav-selection-grid">
+                    <div class="nav-card" onclick="selectApproach('basic')">
+                        <div class="nav-card-icon">📚</div>
+                        <div class="nav-card-title">基礎重視・TOEIC対策</div>
+                        <div class="nav-card-description">
+                            文法や語彙などの基礎力強化とTOEICスコアアップを重視した学習アプローチ
+                        </div>
+                    </div>
+                    <div class="nav-card" onclick="selectApproach('conversation')">
+                        <div class="nav-card-icon">🗣️</div>
+                        <div class="nav-card-title">会話・実践重視</div>
+                        <div class="nav-card-description">
+                            実際のコミュニケーション能力向上を重視した実践的な学習アプローチ
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <button class="btn btn-secondary btn-large" onclick="previousStep()">戻る</button>
+                    <button class="btn btn-primary btn-large" id="next-btn-2" onclick="nextStep()" disabled>次へ進む</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOEIC レベル選択 -->
+        <section class="navigation-section" id="toeic-level" style="display: none;">
+            <div class="container">
+                <h3 class="nav-title">現在のTOEICスコアを選択してください</h3>
+                <p class="nav-subtitle">あなたのレベルに合ったツールをご提案します</p>
+                
+                <div class="diagnosis-grid">
+                    <div class="diagnosis-card" onclick="selectToeicLevel('beginner')">
+                        <div class="diagnosis-title">〜450点</div>
+                        <div class="diagnosis-description">基礎のルールがわからない</div>
+                    </div>
+                    <div class="diagnosis-card" onclick="selectToeicLevel('intermediate')">
+                        <div class="diagnosis-title">451〜600点</div>
+                        <div class="diagnosis-description">問題の傾向を身に付ける</div>
+                    </div>
+                    <div class="diagnosis-card" onclick="selectToeicLevel('upper-intermediate')">
+                        <div class="diagnosis-title">601〜730点</div>
+                        <div class="diagnosis-description">長文にチャレンジ</div>
+                    </div>
+                    <div class="diagnosis-card" onclick="selectToeicLevel('advanced')">
+                        <div class="diagnosis-title">730点〜</div>
+                        <div class="diagnosis-description">スピード・正確性向上</div>
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <button class="btn btn-secondary btn-large" onclick="previousStep()">戻る</button>
+                    <button class="btn btn-primary btn-large" id="next-btn-3" onclick="showResults()" disabled>おすすめツールを見る</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 多言語選択 -->
+        <section class="navigation-section" id="multilingual-selection" style="display: none;">
+            <div class="container">
+                <h3 class="nav-title">学習したい言語を選択してください</h3>
+                <p class="nav-subtitle">学習したい言語を選んでください</p>
+                
+                <div class="diagnosis-grid">
+                    <div class="diagnosis-card" onclick="selectMultiLanguage('chinese')">
+                        <div class="nav-card-icon" style="font-size: 36px; margin-bottom: 10px;">🇨🇳</div>
+                        <div class="diagnosis-title">中国語</div>
+                    </div>
+                    <div class="diagnosis-card" onclick="selectMultiLanguage('german')">
+                        <div class="nav-card-icon" style="font-size: 36px; margin-bottom: 10px;">🇩🇪</div>
+                        <div class="diagnosis-title">ドイツ語</div>
+                    </div>
+                    <div class="diagnosis-card" onclick="selectMultiLanguage('french')">
+                        <div class="nav-card-icon" style="font-size: 36px; margin-bottom: 10px;">🇫🇷</div>
+                        <div class="diagnosis-title">フランス語</div>
+                    </div>
+                    <div class="diagnosis-card" onclick="selectMultiLanguage('thai')">
+                        <div class="nav-card-icon" style="font-size: 36px; margin-bottom: 10px;">🇹🇭</div>
+                        <div class="diagnosis-title">タイ語</div>
+                    </div>
+                    <div class="diagnosis-card" onclick="selectMultiLanguage('vietnamese')">
+                        <div class="nav-card-icon" style="font-size: 36px; margin-bottom: 10px;">🇻🇳</div>
+                        <div class="diagnosis-title">ベトナム語</div>
+                    </div>
+                    <div class="diagnosis-card" onclick="selectMultiLanguage('korean')">
+                        <div class="nav-card-icon" style="font-size: 36px; margin-bottom: 10px;">🇰🇷</div>
+                        <div class="diagnosis-title">韓国語</div>
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <button class="btn btn-secondary btn-large" onclick="previousStep()">戻る</button>
+                    <button class="btn btn-primary btn-large" id="next-btn-4" onclick="showResults()" disabled>おすすめツールを見る</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ツール一覧画面 -->
+    <div class="screen" id="tools-screen">
+        <!-- フィルター & ツール一覧 -->
+        <section class="filter-section" id="tools">
+            <div class="container">
+                <h2 class="nav-title">あなたにおすすめの学習ツール</h2>
+                <p class="nav-subtitle" id="recommendation-text">診断結果に基づいて、最適なツールをご提案します</p>
+                
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="switchTab('recommended')">おすすめ</button>
+                    <button class="filter-tab" onclick="switchTab('purpose')">目的別</button>
+                    <button class="filter-tab" onclick="switchTab('level')">レベル別</button>
+                    <button class="filter-tab" onclick="switchTab('type')">ツール種類別</button>
+                    <button class="filter-tab" onclick="switchTab('all')">すべて表示</button>
+                </div>
+
+                <div class="sub-filters" id="sub-filters">
+                    <!-- 動的に生成 -->
+                </div>
+
+                <div class="cards-container" id="tools-container">
+                    <!-- 動的に生成 -->
+                </div>
+                
+                <div class="btn-container">
+                    <button class="btn btn-secondary btn-large" onclick="backToNavigation()">診断をやり直す</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FAQ & サポート -->
+    <section class="support-section" id="faq">
+        <div class="container">
+            <h2 class="section-title">よくある質問 & サポート</h2>
+            <div class="support-grid">
+                <div class="support-card">
+                    <div class="support-icon">?</div>
+                    <h3 class="support-title">よくある質問</h3>
+                    <p class="support-desc">申し込みに関する疑問を解決</p>
+                    <div class="faq-list">
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-question">Q. 複数のツールを同時に申し込めますか？</div>
+                            <div class="faq-answer">A. はい、複数のツールを同時にご利用いただけます。ただし、学習効果を考慮して計画的な受講をお勧めします。</div>
+                        </div>
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-question">Q. 途中解約は可能ですか？</div>
+                            <div class="faq-answer">A. プランにより異なりますが、多くのツールで月単位での解約が可能です。詳細は各ツールの詳細ページをご確認ください。</div>
+                        </div>
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-question">Q. 会社負担と自己負担の違いは？</div>
+                            <div class="faq-answer">A. CTS経由のツールは会社負担制度の対象となる場合があります。詳細は人事部までお問い合わせください。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="support-card">
+                    <div class="support-icon">✉</div>
+                    <h3 class="support-title">サポート窓口</h3>
+                    <p class="support-desc">お困りの際はこちらへ</p>
+                    <div style="text-align: left; margin-top: 20px;">
+                        <p style="margin-bottom: 10px;"><strong>CTS経由ツールのお問い合わせ</strong></p>
+                        <p style="font-size: 14px; color: #666;">Email: support@cts.example.com<br>
+                        内線: 1234<br>
+                        対応時間: 平日 9:00-17:30</p>
+                        
+                        <p style="margin: 20px 0 10px;"><strong>その他のツールについて</strong></p>
+                        <p style="font-size: 14px; color: #666;">各ベンダーのサポート窓口をご利用ください。<br>
+                        詳細は各ツールの詳細ページに記載されています。</p>
+                    </div>
+                </div>
+
+                <div class="support-card">
+                    <div class="support-icon">📚</div>
+                    <h3 class="support-title">学習ガイド</h3>
+                    <p class="support-desc">効果的な学習のために</p>
+                    <div style="text-align: left; margin-top: 20px;">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                <span style="position: absolute; left: 0;">✓</span>
+                                目標設定の重要性
+                            </li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                <span style="position: absolute; left: 0;">✓</span>
+                                継続的な学習のコツ
+                            </li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                <span style="position: absolute; left: 0;">✓</span>
+                                レベル別学習プラン例
+                            </li>
+                            <li style="margin-bottom: 10px; padding-left: 20px; position: relative;">
+                                <span style="position: absolute; left: 0;">✓</span>
+                                成果測定の方法
+                            </li>
+                        </ul>
+                        <button class="btn btn-secondary" style="margin-top: 15px; width: 100%;">学習ガイドをダウンロード</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <div class="container">
+            <p>© 2024 村田製作所 人事部 | 語学自己啓発ポータル</p>
+        </div>
+    </footer>
+
+    <script>
+        // グローバル変数
+        let userSelections = {};
+        let currentStep = 1;
+        let totalSteps = 4;
+
+        // サンプルツールデータ（実際はAPIから取得）
+        const toolsData = [
+            {
+                id: 1,
+                name: "Bizmates プレミアムプラン",
+                vendor: "Bizmates",
+                category: ["ビジネス英会話", "中級〜上級"],
+                type: "cts",
+                plan: "毎日25分レッスン",
+                price: "¥13,200/月",
+                deadline: "毎月20日",
+                startDate: "翌月1日",
+                tags: ["english", "basic", "intermediate", "advanced", "conversation"],
+                recommended: true
+            },
+            {
+                id: 2,
+                name: "TOEIC対策コース",
+                vendor: "スタディサプリ",
+                category: ["TOEIC対策", "初級〜中級", "アプリ学習"],
+                type: "external",
+                plan: "動画＋演習問題",
+                price: "¥3,278/月",
+                deadline: "随時",
+                startDate: "即日",
+                tags: ["english", "basic", "beginner", "intermediate"],
+                recommended: true
+            },
+            {
+                id: 3,
+                name: "多言語学習プラン",
+                vendor: "Rosetta Stone",
+                category: ["多言語対応", "初級〜中級", "自己学習"],
+                type: "cts",
+                plan: "24言語から選択",
+                price: "¥11,800/年",
+                deadline: "毎月25日",
+                startDate: "翌月1日",
+                tags: ["multilingual", "chinese", "german", "french"],
+                recommended: false
+            },
+            {
+                id: 4,
+                name: "日常英会話コース",
+                vendor: "レアジョブ",
+                category: ["日常会話", "初級〜中級", "オンライン"],
+                type: "cts",
+                plan: "週3回25分",
+                price: "¥7,980/月",
+                deadline: "毎月20日",
+                startDate: "翌月1日",
+                tags: ["english", "conversation", "beginner", "intermediate"],
+                recommended: false
+            },
+            {
+                id: 5,
+                name: "プロフェッショナルプラン",
+                vendor: "EF English Live",
+                category: ["ビジネス英語", "上級", "グループレッスン"],
+                type: "external",
+                plan: "グループ＋個人",
+                price: "¥8,900/月",
+                deadline: "随時",
+                startDate: "即日",
+                tags: ["english", "conversation", "advanced"],
+                recommended: false
+            },
+            {
+                id: 6,
+                name: "ビジネス英語集中コース",
+                vendor: "Berlitz",
+                category: ["ビジネス英語", "中級〜上級", "マンツーマン"],
+                type: "cts",
+                plan: "週2回40分",
+                price: "¥19,800/月",
+                deadline: "毎月15日",
+                startDate: "翌月1日",
+                tags: ["english", "conversation", "intermediate", "advanced"],
+                recommended: false
+            }
+        ];
+
+        // 言語選択
+        function selectLanguage(language) {
+            // 他の選択を解除
+            document.querySelectorAll('#language-selection .nav-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 選択したカードをマーク
+            event.target.closest('.nav-card').classList.add('selected');
+            
+            userSelections.language = language;
+            document.getElementById('next-btn-1').disabled = false;
+            
+            updateProgress(25);
+        }
+
+        // 英語アプローチ選択
+        function selectApproach(approach) {
+            document.querySelectorAll('#english-approach .nav-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            event.target.closest('.nav-card').classList.add('selected');
+            
+            userSelections.approach = approach;
+            document.getElementById('next-btn-2').disabled = false;
+            
+            updateProgress(50);
+        }
+
+        // TOEICレベル選択
+        function selectToeicLevel(level) {
+            document.querySelectorAll('#toeic-level .diagnosis-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            event.target.closest('.diagnosis-card').classList.add('selected');
+            
+            userSelections.toeicLevel = level;
+            document.getElementById('next-btn-3').disabled = false;
+            
+            updateProgress(75);
+        }
+
+        // 多言語選択
+        function selectMultiLanguage(language) {
+            document.querySelectorAll('#multilingual-selection .diagnosis-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            event.target.closest('.diagnosis-card').classList.add('selected');
+            
+            userSelections.multiLanguage = language;
+            document.getElementById('next-btn-4').disabled = false;
+            
+            updateProgress(75);
+        }
+
+        // 次のステップ
+        function nextStep() {
+            currentStep++;
+            
+            if (userSelections.language === 'english') {
+                if (currentStep === 2) {
+                    showSection('english-approach');
+                } else if (currentStep === 3) {
+                    if (userSelections.approach === 'basic') {
+                        showSection('toeic-level');
+                    } else {
+                        showResults();
+                    }
+                }
+            } else if (userSelections.language === 'multilingual') {
+                if (currentStep === 2) {
+                    showSection('multilingual-selection');
+                }
+            }
+        }
+
+        // 前のステップ
+        function previousStep() {
+            currentStep--;
+            updateProgress((currentStep / totalSteps) * 100);
+            
+            if (currentStep === 1) {
+                showSection('language-selection');
+            } else if (currentStep === 2 && userSelections.language === 'english') {
+                showSection('english-approach');
+            }
+        }
+
+        // セクション表示
+        function showSection(sectionId) {
+            document.querySelectorAll('.navigation-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // プログレスバー更新
+        function updateProgress(percentage) {
+            document.getElementById('progress-fill').style.width = percentage + '%';
+        }
+
+        // 結果表示
+        function showResults() {
+            updateProgress(100);
+            
+            // 画面切り替え
+            document.getElementById('navigation-screen').classList.remove('active');
+            document.getElementById('tools-screen').classList.add('active');
+            
+            // 推奨ツールを表示
+            displayRecommendedTools();
+        }
+
+        // 診断に戻る
+        function backToNavigation() {
+            // 選択状態をリセット
+            userSelections = {};
+            currentStep = 1;
+            
+            // カードの選択状態をリセット
+            document.querySelectorAll('.nav-card, .diagnosis-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // ボタンを無効化
+            document.querySelectorAll('[id^="next-btn-"]').forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            // プログレスリセット
+            updateProgress(20);
+            
+            // 最初の画面に戻る
+            document.getElementById('tools-screen').classList.remove('active');
+            document.getElementById('navigation-screen').classList.add('active');
+            showSection('language-selection');
+        }
+
+        // 推奨ツール表示
+        function displayRecommendedTools() {
+            const container = document.getElementById('tools-container');
+            const recommendationText = document.getElementById('recommendation-text');
+            
+            // 推奨メッセージを設定
+            let message = "";
+            if (userSelections.language === 'english') {
+                if (userSelections.approach === 'basic') {
+                    const levelTexts = {
+                        'beginner': '基礎文法重視',
+                        'intermediate': 'TOEIC対策重視',
+                        'upper-intermediate': '長文読解重視',
+                        'advanced': 'スコアアップ重視'
+                    };
+                    message = `英語学習（${levelTexts[userSelections.toeicLevel]}）に最適なツールをご提案します`;
+                } else {
+                    message = "実践的な英会話力向上に最適なツールをご提案します";
+                }
+            } else {
+                const langTexts = {
+                    'chinese': '中国語',
+                    'german': 'ドイツ語', 
+                    'french': 'フランス語',
+                    'thai': 'タイ語',
+                    'vietnamese': 'ベトナム語',
+                    'korean': '韓国語'
+                };
+                message = `${langTexts[userSelections.multiLanguage]}学習に最適なツールをご提案します`;
+            }
+            recommendationText.textContent = message;
+            
+            // フィルタリング
+            let filteredTools = toolsData.filter(tool => {
+                if (userSelections.language === 'english') {
+                    if (!tool.tags.includes('english')) return false;
+                    
+                    if (userSelections.approach === 'basic') {
+                        return tool.tags.includes('basic') && tool.tags.includes(userSelections.toeicLevel);
+                    } else {
+                        return tool.tags.includes('conversation');
+                    }
+                } else {
+                    return tool.tags.includes('multilingual') || tool.tags.includes(userSelections.multiLanguage);
+                }
+            });
+            
+            // 推奨ツールを上位に表示
+            filteredTools.sort((a, b) => b.recommended - a.recommended);
+            
+            // ツールカード生成
+            container.innerHTML = filteredTools.map(tool => createToolCard(tool)).join('');
+        }
+
+        // ツールカード作成
+        function createToolCard(tool) {
+            const badgeClass = tool.type === 'cts' ? 'cts' : 'external';
+            const badgeText = tool.type === 'cts' ? 'CTS経由' : '外部サイト';
+            const recommendedBadge = tool.recommended ? '<span class="badge recommended">おすすめ</span>' : '';
+            
+            return `
+                <div class="tool-card">
+                    <div class="card-header">
+                        <div class="vendor-logo">${tool.vendor}</div>
+                        <div class="card-badges">
+                            <span class="badge ${badgeClass}">${badgeText}</span>
+                            ${recommendedBadge}
+                        </div>
+                    </div>
+                    <h3 class="card-title">${tool.name}</h3>
+                    <div class="card-category">
+                        ${tool.category.map(cat => `<span class="category-tag">${cat}</span>`).join('')}
+                    </div>
+                    <div class="card-info">
+                        <div class="info-row">
+                            <span class="info-label">プラン内容：</span>
+                            <span class="info-value">${tool.plan}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">価格：</span>
+                            <span class="info-value price">${tool.price}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">申込締切：</span>
+                            <span class="info-value">${tool.deadline}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">開始日：</span>
+                            <span class="info-value">${tool.startDate}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-secondary">詳細を見る</button>
+                        <button class="btn btn-primary">申し込む</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // タブ切り替え機能
+        function switchTab(tabName) {
+            // タブボタンのアクティブ状態を更新
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.textContent.includes(getTabLabel(tabName))) {
+                    tab.classList.add('active');
+                }
+            });
+
+            // サブフィルターを更新
+            updateSubFilters(tabName);
+            
+            // ツール表示を更新
+            if (tabName === 'recommended') {
+                displayRecommendedTools();
+            } else {
+                displayAllTools(tabName);
+            }
+        }
+
+        function getTabLabel(tabName) {
+            const labels = {
+                'recommended': 'おすすめ',
+                'purpose': '目的別',
+                'level': 'レベル別',
+                'type': 'ツール種類別',
+                'all': 'すべて表示'
+            };
+            return labels[tabName] || '';
+        }
+
+        function updateSubFilters(tabName) {
+            const filterContainer = document.getElementById('sub-filters');
+            const filters = {
+                'purpose': ['すべて', 'ビジネス英会話', 'TOEIC対策', 'リスニング強化', 'スピーキング強化', '文法・語彙', 'プレゼンテーション'],
+                'level': ['すべて', '初級', '中級', '上級', '初級〜中級', '中級〜上級'],
+                'type': ['すべて', 'オンラインレッスン', 'アプリ学習', '動画教材', 'マンツーマン', 'グループレッスン', '自己学習'],
+                'recommended': [],
+                'all': []
+            };
+
+            filterContainer.innerHTML = '';
+            if (filters[tabName] && filters[tabName].length > 0) {
+                filters[tabName].forEach((filter, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'sub-filter-btn';
+                    if (index === 0) btn.classList.add('active');
+                    btn.textContent = filter;
+                    btn.onclick = function() {
+                        document.querySelectorAll('.sub-filter-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                    };
+                    filterContainer.appendChild(btn);
+                });
+            }
+        }
+
+        // 全ツール表示
+        function displayAllTools(filter = 'all') {
+            const container = document.getElementById('tools-container');
+            container.innerHTML = toolsData.map(tool => createToolCard(tool)).join('');
+        }
+
+        // FAQ開閉機能
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+        }
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress(20);
+        });
+    </script>
+</body>
+</html>
